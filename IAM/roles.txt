@@ -1,0 +1,62 @@
+An IAM Role is an identity in AWS that provides a set of permissions to an authorized user, AWS service, or external identity for a specific purpose. Unlike an IAM user, a role is designed to be assumed when needed and provides temporary security credentials.
+1. Basic concept
+Imagine you have an EC2 instance that needs to read files from an S3 bucket.
+- Without a role: You might be tempted to store AWS access keys on the EC2 instance. This creates a security risk.
+- With a role: You attach an IAM role to the EC2 instance. The instance can obtain temporary credentials to access the permitted S3 resources.
+EC2 Instance
+Needs to read an S3 file
+
+IAM Role
+Allows only the required S3 actions
+
+Amazon S3
+Access permitted by the role's effective permissions
+
+
+2. IAM User vs IAM Role
+Feature	IAM User	IAM Role
+Purpose	Identity for a person or application	Temporary identity for a task or trusted entity
+Credentials	May have long-term credentials	Uses temporary credentials when assumed
+Access keys	Can have long-term access keys	Does not have its own permanent access keys
+Used by	People or applications	Users, AWS services, and trusted external identities
+Example	Developer logging in to AWS	EC2 accessing S3
+Exam memory trick: User = identity with potentially long-term credentials. Role = assume it to obtain temporary credentials.
+3. Important IAM role concepts
+
+Trust policy
+Defines who or what can assume the role. For example, whether the EC2 service is trusted to use the role.
+
+
+
+
+Permissions policy
+Defines what actions are allowed or denied after the role is assumed. For example, reading objects from a particular S3 bucket.
+
+
+
+
+Temporary security credentials
+AWS provides credentials with a limited lifetime. These include an access key ID, secret access key, and session token.
+
+
+
+Remember: Trust policy = Who? Permissions policy = What?
+4. Common types and use cases
+- Service role: An AWS service assumes a role to perform an authorized task.
+- EC2 instance role: Lets applications running on EC2 access AWS services without storing long-term access keys on the instance.
+- Cross-account role: Allows an authorized identity from another AWS account to assume a role, subject to the trust and permission requirements.
+- Federated access role: Allows identities authenticated through an external identity provider to access AWS using temporary credentials.
+- Service-linked role: A special role linked to a specific AWS service, with permissions defined for that service's needs.
+5. How roles work
+1. An IAM role is created with a trust policy and permissions.
+2. An authorized identity or service requests to assume the role.
+3. AWS checks the trust relationship and applicable access controls.
+4. If authorized, AWS issues temporary credentials.
+5. Those credentials are used to perform actions within the role's effective permissions.
+6. AWS exam traps
+- A role is not the same as a user.
+- Attaching an IAM role to EC2 is a recommended way to provide AWS access without hardcoding long-term access keys.
+- A trust policy alone does not grant permission to read S3 objects; the role also needs appropriate permissions.
+- Assuming a role does not automatically grant administrator access.
+- Temporary credentials expire; applications must obtain refreshed credentials when needed.
+- Explicit deny and other applicable permission restrictions can still block an action.

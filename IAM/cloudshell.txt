@@ -1,0 +1,65 @@
+What is AWS CloudShell?
+AWS CloudShell is a browser-based, pre-authenticated shell that lets you run command-line commands to interact with AWS services directly from the AWS Management Console.
+Think of it as a terminal available inside your AWS Console, so you don't need to install the AWS CLI on your own computer to get started.
+
+
+
+
+
+
+
+aws.amazon.com
+
+
+For example, you can run:
+aws s3 ls
+
+
+This lists the S3 buckets accessible to your current identity, subject to its permissions.
+2. Key features of CloudShell
+- Browser-based: Access it from the AWS Management Console.
+- Pre-authenticated: Uses the credentials of your console sign-in.
+- Pre-installed tools: Includes the AWS CLI and other development utilities.
+- No local installation required: You don't need to install the CLI on your PC to use CloudShell.
+- Persistent storage: Files in your CloudShell home directory persist across sessions within the supported environment and Region, subject to AWS's storage policies.
+- Secure access: AWS permissions still determine which services and actions you can use.
+3. CloudShell vs CLI vs SDK
+Feature	CloudShell	AWS CLI	AWS SDK
+What is it?	Browser-based shell environment	Command-line tool	Programming libraries
+Where does it run?	AWS-managed environment	Your terminal or another environment	Inside application code
+Installation	No local installation required	Usually installed locally unless using CloudShell	Install the appropriate SDK for your language
+Authentication	Uses console credentials	Uses a configured credential provider	Uses a configured credential provider
+Best use	Quick AWS commands in the Console	Scripting and automation	Building applications
+Exam trap: CloudShell is not a replacement for the AWS CLI. It provides an environment where you can use the CLI without installing it locally.
+4. How CloudShell works
+AWS Management Console
+
+AWS CloudShell
+Pre-installed CLI and shell tools
+
+AWS services
+Actions allowed by your identity's permissions
+
+
+Example commands
+Check the AWS CLI version:
+aws --version
+
+
+Check the identity used by the CLI:
+aws sts get-caller-identity
+
+
+List S3 buckets:
+aws s3 ls
+
+
+These commands are useful for checking your environment and credentials before running AWS operations.
+5. Important exam points
+- CloudShell is accessed through the AWS Management Console.
+- It is pre-authenticated using the signed-in identity.
+- You don't need to install the AWS CLI locally to use it.
+- CloudShell commands remain subject to IAM permissions and other applicable controls.
+- Persistent files have Region-specific behavior; don't assume they are automatically shared across all Regions.
+- CloudShell availability and supported features can vary by Region and environment.
+Memory trick: Console = browser interface; CloudShell = terminal inside the Console; CLI = command-line tool; SDK = code libraries.

@@ -1,0 +1,83 @@
+AWS IAM Security Tools — CLF-C02
+IAM security tools help you protect AWS accounts, strengthen authentication, identify excessive permissions, and monitor access.
+For the AWS Certified Cloud Practitioner exam, focus on IAM Credentials Report, IAM Access Analyzer, and IAM best practices.
+1. IAM security tools
+
+
+
+
+
+
+
+
+
+1. IAM Credentials Report
+Think: Account-wide credential audit
+A downloadable report containing credential-related information about IAM users, such as:
+- Whether a password is enabled.
+- When passwords and access keys were last used or rotated.
+- Whether MFA is enabled for the user.
+Exam scenario: An administrator wants to audit the credential status of all IAM users.
+
+
+
+
+
+
+
+
+
+
+
+
+2. IAM Access Analyzer
+Think: Detect unintended access
+Analyzes resource-based policies to identify access granted to external principals, such as another AWS account, or to public access where supported.
+It can also validate IAM policies and help identify unused access with the relevant analyzer features.
+Exam scenario: An organization wants to discover whether an S3 bucket is accessible from outside its AWS account.
+
+
+
+
+
+
+
+
+
+
+
+
+3. Multi-Factor Authentication (MFA)
+Think: Extra authentication factor
+Adds a second verification factor to help protect an account, even if a password is compromised.
+AWS supports virtual MFA applications, hardware MFA devices, and supported passkey or security-key options.
+Exam scenario: An administrator wants to strengthen sign-in security for the AWS account root user.
+
+
+
+2. IAM security best practices
+Best practice	Why it matters
+Enable MFA for the root user	Adds a layer of protection to the highest-privilege account
+Do not use the root user for daily tasks	Reduces the risk of accidental or unauthorized high-impact actions
+Apply least privilege	Grant only the permissions required
+Prefer IAM roles and temporary credentials	Reduces reliance on long-term access keys
+Rotate or remove unnecessary credentials	Reduces exposure from stale credentials
+Use IAM Identity Center for workforce access where appropriate	Centralizes access management across AWS accounts
+Review permissions regularly	Identifies excessive or unused access
+3. Important distinctions for the exam
+Credentials Report vs. Access Analyzer
+- Credentials Report → audits the credential status of IAM users.
+- Access Analyzer → identifies external access and supports policy validation and access reviews.
+
+
+MFA vs. Password Policy
+- MFA → requires an additional authentication factor.
+- Password Policy → defines requirements such as password length and complexity.
+
+
+IAM vs. CloudTrail
+- IAM → manages identities and permissions.
+- CloudTrail → records AWS API activity and account events.
+
+
+Memory trick: Credentials Report = Who has what credentials? Access Analyzer = Who can access what? MFA = Is sign-in protected by another factor?

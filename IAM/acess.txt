@@ -1,0 +1,109 @@
+Three ways to access AWS
+
+
+
+
+
+
+
+
+
+1. AWS Management Console
+A graphical web interface used to manage AWS services.
+- Sign in through a browser.
+- Create EC2 instances, S3 buckets, IAM users, and more.
+- Suitable for beginners and manual administration.
+Example: Open the AWS Console and launch an EC2 instance.
+
+
+
+
+
+
+
+
+
+
+
+
+2. AWS CLI
+The Command Line Interface lets you manage AWS through terminal commands.
+- Automate repetitive operations.
+- Run commands from Windows, Linux, or macOS.
+- Use it in scripts and CI/CD pipelines.
+Example:
+aws s3 ls
+
+
+Lists S3 buckets accessible to the authenticated identity, subject to permissions.
+
+
+
+
+
+
+
+
+
+
+
+
+3. AWS SDKs
+Software Development Kits let application code interact with AWS services programmatically.
+- Available for languages such as Python, Java, JavaScript, and .NET.
+- Useful for building applications that call AWS APIs.
+- Support automation directly from application code.
+Example using Python and Boto3:
+import boto3s3 = boto3.client("s3")response = s3.list_buckets()for bucket in response["Buckets"]:    print(bucket["Name"])
+
+
+
+
+
+
+2. Compare the access methods
+Feature	Console	CLI	SDK
+Interface	Web browser	Terminal	Application code
+Main purpose	Manual management	Commands and scripts	Build AWS-integrated applications
+Typical user	Administrator or developer	Administrator or DevOps engineer	Software developer
+Automation	Limited manual workflow	Strong	Strong
+Example	Create an S3 bucket visually	aws s3 ls	boto3.client("s3")
+Memory trick: Console = click, CLI = command, SDK = code.
+
+3. How authentication works
+These access methods still need authentication and authorization.
+Console / CLI / SDK
+A request to AWS
+
+Credentials
+IAM Identity Center, role credentials, or other supported credentials
+
+AWS authorization
+IAM policies and other applicable controls determine access
+
+
+Two important distinctions:
+- Authentication: Who are you?
+- Authorization: What are you allowed to do?
+For example, successfully authenticating to AWS does not mean you can delete an S3 bucket. Your permissions must allow that action.
+4. Credentials for CLI and SDK access
+The AWS CLI and SDKs use a credential provider chain to locate credentials.
+Common sources include:
+- IAM role credentials supplied to an EC2 instance.
+- Temporary credentials from AWS IAM Identity Center or an assumed role.
+- Credentials configured in an AWS CLI profile.
+- Environment variables or other supported providers.
+For applications running on EC2, prefer an IAM role attached through an instance profile rather than hardcoding access keys into source code.
+Example command to configure an AWS CLI profile interactively:
+aws configure
+
+
+This can configure an access key, secret access key, default Region, and output format. For workforce access, IAM Identity Center and temporary credentials are generally preferable to long-term IAM user access keys.
+
+5. Exam traps
+Scenario	Best answer
+Manage AWS visually through a browser	AWS Management Console
+Automate infrastructure from a terminal	AWS CLI
+Call AWS services from Python application code	AWS SDK / Boto3
+Give an EC2 application AWS access without embedding long-term keys	IAM role
+A user can sign in but cannot perform an action	Check authorization and applicable policies

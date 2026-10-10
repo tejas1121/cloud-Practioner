@@ -1,0 +1,135 @@
+IAM policy inheritance
+Policy inheritance means a user can receive permissions through different applicable policies, including policies attached directly to the user and policies attached to groups the user belongs to.
+Example: User belongs to two groups
+Suppose your NovaSRE project has this IAM structure:
+IAM user: Tejas
+Member of two groups
+
+Developers group
+S3 read access
+
+
+Monitoring group
+CloudWatch read access
+
+
+
+Effective permissions
+S3 read + CloudWatch read, subject to applicable restrictions
+
+
+Because Tejas belongs to both groups, the applicable allows from both groups can contribute to his permissions.
+A user can also have a policy attached directly to their IAM identity.
+The basic evaluation rules
+For identity-based policies, remember these rules:
+1. Default deny: An action is denied if no applicable policy allows it.
+2. Explicit Allow: Grants an action if no applicable restriction overrides it.
+3. Explicit Deny: Overrides an applicable Allow.
+4. Additional restrictions: Permissions boundaries, service control policies (SCPs), and other applicable policy mechanisms can limit access.
+Allow in Group A + Allow in Group B
+
+The user can receive permissions from both groups.
+Allow + applicable Explicit Deny
+
+The request is denied.
+No applicable Allow
+
+The request is denied by default.
+Exam trap: Permissions are not simply inherited from one group at a time. Applicable allows can combine, but explicit denies and other restrictions can prevent an action.
+
+2. IAM policy structure
+IAM policies are generally written as JSON documents. Let's examine a policy that permits a developer to read objects in a specific S3 bucket.
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadProjectObjects",
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::novasre-files/*"
+    }
+  ]
+}
+
+
+Understand every field
+1. Version
+"Version": "2012-10-17"
+Identifies the IAM policy language version. This is the commonly used version for current IAM policies.
+
+
+2. Statement
+"Statement": [...]
+Contains one or more permission statements. Each statement describes an access rule.
+
+
+3. Sid
+"Sid": "ReadProjectObjects"
+An optional statement identifier that helps identify the purpose of a statement.
+
+
+4. Effect
+"Effect": "Allow"
+Specifies whether the statement allows or denies the requested action.
+
+
+5. Action
+"Action": "s3:GetObject"
+Specifies the AWS API action controlled by the statement.
+
+
+6. Resource
+"Resource": "arn:aws:s3:::novasre-files/*"
+Identifies the resources to which the statement applies. Here, * matches objects in that bucket.
+
+
+7. Condition
+Optional. Specifies additional requirements that must be met for the statement to apply.
+Example: Restricting an action based on the source IP address or a requested resource tag.
+
+
+Policy structure memory trick
+V – S – E – A – R – C
+- Version
+- Statement
+- Effect
+- Action
+- Resource
+- Condition
+Remember that Sid is optional, and Condition is optional. The fields are not all mandatory in every policy statement.
+
+3. Understanding Action and Resource
+Consider these two policies:
+Policy A — Read objects
+{
+  "Effect": "Allow",
+  "Action": "s3:GetObject",
+  "Resource": "arn:aws:s3:::novasre-files/*"
+}
+
+
+This permits reading objects in the specified bucket, subject to other applicable permissions and restrictions.
+Policy B — List bucket contents
+{
+  "Effect": "Allow",
+  "Action": "s3:ListBucket",
+  "Resource": "arn:aws:s3:::novasre-files"
+}
+
+
+This permits listing the bucket's contents.
+The distinction is important:
+Action	Resource ARN pattern
+s3:GetObject	arn:aws:s3:::bucket-name/*
+s3:ListBucket	arn:aws:s3:::bucket-name
+s3:PutObject	arn:aws:s3:::bucket-name/*
+s3:DeleteObject	arn:aws:s3:::bucket-name/*
+Exam trap: A bucket ARN and an object ARN are different. A policy that permits listing a bucket does not automatically permit reading its objects.
+4. Types of IAM policies
+Policy type	Attached to	Main purpose
+Identity-based	User, group or role	Define what the identity can do
+Resource-based	A resource, such as an S3 bucket	Define access to that resource
+AWS managed	AWS-maintained policy	Reusable permissions maintained by AWS
+Customer managed	Customer-created policy	Reusable permissions you control
+Inline	Embedded in one identity	Permissions tied directly to that identity
+Also remember: permissions boundaries set the maximum permissions an identity-based policy can grant, while SCPs set permission guardrails for accounts in AWS Organizations. Neither grants permissions by itsel
