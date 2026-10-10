@@ -1,0 +1,110 @@
+What is AWS IAM?
+IAM (Identity and Access Management) is an AWS service that controls who can access AWS resources and what actions they can perform.
+For example, in your NovaSRE project, you might want:
+- A developer to upload images to S3.
+- A cloud administrator to manage EC2 instances.
+- A monitoring service to read CloudWatch metrics.
+IAM lets you grant each identity the permissions it needs without giving everyone full access.
+IAM identities
+Users · Groups · Roles
+
+IAM policies
+Define allowed or denied actions on resources
+
+Authorization decision
+Is this request allowed?
+
+
+Important: IAM authentication establishes who you are; authorization determines what you can do.
+2. IAM Users
+An IAM user is an identity created in an AWS account for a person or application that needs long-term credentials.
+An IAM user can have:
+- A username and console password, if console access is configured.
+- Access keys for programmatic access, if needed.
+- Permissions through policies attached directly or inherited through groups.
+Example
+Suppose three developers work on your project:
+IAM user	Responsibility
+tejas-dev	Upload application files to S3
+rahul-dev	View EC2 instances
+admin-dev	Manage approved AWS resources
+Each user can receive different permissions.
+Exam point: An IAM user does not automatically receive full access just because it exists.
+Also, AWS generally recommends federation and temporary credentials for human users rather than creating long-term IAM users whenever possible.
+3. IAM Groups
+An IAM group is a collection of IAM users. You attach a policy to the group to grant its users a common set of permissions.
+Policy: S3 read access
+
+Developers group
+
+Tejas
+
+Rahul
+
+Priya
+
+
+All three users inherit the group's S3 read permissions.
+
+Why use groups?
+Imagine your company has 50 developers. Instead of attaching the same policy to every user individually, create a Developers group and attach the policy once.
+This simplifies administration.
+Exam traps:
+- Groups contain IAM users, not other groups.
+- A user can belong to multiple groups.
+- A group is not an identity that can sign in.
+- Groups cannot be nested.
+4. IAM Permissions and Policies
+An IAM policy is a JSON document that specifies permissions.
+Policies can be attached to IAM users, groups, and roles. AWS evaluates applicable policies when an identity makes a request.
+Here is a simplified example of a policy allowing read-only access to objects in a particular S3 bucket.
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::my-project-bucket/*"
+    }
+  ]
+}
+
+
+Understand each field:
+Field	Meaning
+Version	Policy language version
+Effect	Allow or Deny
+Action	AWS operation being controlled
+Resource	Resource to which the statement applies
+Condition	Optional conditions under which the statement applies
+In this example, s3:GetObject allows reading objects from the specified bucket. It does not grant permission to upload or delete objects.
+Common policy types
+- Identity-based policies: Attached to users, groups, or roles.
+- Resource-based policies: Attached to resources, such as an S3 bucket policy.
+- AWS managed policies: Created and maintained by AWS.
+- Customer managed policies: Created and maintained by you.
+- Inline policies: Embedded directly into a single identity.
+For the Cloud Practitioner exam, focus primarily on recognizing these categories and their purposes.
+5. How AWS evaluates permissions
+Use these rules for exam questions:
+1. By default, access is denied.
+2. An applicable explicit Allow grants permission unless another applicable rule overrides it.
+3. An applicable explicit Deny overrides an Allow.
+4. Permissions boundaries, service control policies, and other policy mechanisms can further restrict access.
+Example: A user has an Allow policy for S3 access, but another applicable policy explicitly denies deleting objects. The delete request is denied.
+Memory trick: Explicit Deny wins.
+6. IAM best practices
+Least privilege
+Grant only the permissions necessary for the task.
+
+
+Enable MFA
+Add an additional authentication factor to help protect identities.
+
+
+Protect the root user
+Avoid routine root-user access and enable MFA on the root user.
+
+
+Prefer temporary credentials
+Use IAM roles and temporary credentials where appropriate instead of distributing long-term access keys.
