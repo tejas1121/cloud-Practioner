@@ -1,0 +1,68 @@
+What is a Security Group (SG)?
+A Security Group is a virtual firewall attached to an EC2 instance's network interface. It controls which network traffic is allowed to reach or leave the instance.
+Think of an EC2 instance as your house and a security group as its security guard, allowing only permitted traffic through.
+Internet / Client
+HTTP, HTTPS, SSH requests
+
+Security Group
+Checks inbound and outbound rules
+Allowed traffic
+Unmatched inbound traffic blocked
+
+
+EC2 Instance
+Web server / application / database
+
+
+Important security group rules
+- Stateful: If inbound traffic is allowed and the instance responds, the response traffic is automatically allowed, regardless of the outbound rules.
+- Allow rules only: Security groups support allow rules, not explicit deny rules.
+- Default inbound: A newly created security group has no inbound rules by default.
+- Default outbound: A newly created security group allows all outbound traffic by default, unless its rules are changed.
+- Associated with a network interface: A security group can be associated with multiple EC2 instances, and an instance can have multiple security groups, subject to AWS limits.
+- Changes take effect automatically: You generally do not need to restart the instance after changing security group rules.
+Exam trap: Security groups are stateful. Network ACLs (NACLs) are stateless.
+2. Classic ports you must remember
+Ports identify which service should receive network traffic.
+Port	Protocol / service	Common use
+22	SSH	Secure remote login to Linux
+21	FTP	File Transfer Protocol control
+22	SFTP	Secure file transfer over SSH
+80	HTTP	Unencrypted web traffic
+443	HTTPS	Encrypted web traffic
+3389	RDP	Remote Desktop for Windows
+53	DNS	Domain name resolution
+25	SMTP	Email transfer
+110	POP3	Email retrieval
+143	IMAP	Email access and synchronization
+3306	MySQL / MariaDB	Database connections
+5432	PostgreSQL	Database connections
+27017	MongoDB	Database connections
+8080	Common alternative HTTP / web app port	Development and application servers
+For the CLF-C02 exam, prioritize 22, 80, 443 and 3389, then recognize common database ports.
+3. Example: Configure an EC2 web server
+Suppose you launch an EC2 instance hosting a website.
+Inbound: HTTP — TCP 80
+Source: 0.0.0.0/0, if the website is intended to be publicly accessible over IPv4.
+
+
+
+Inbound: HTTPS — TCP 443
+Source: 0.0.0.0/0, if public HTTPS access is required.
+
+
+
+Inbound: SSH — TCP 22
+Restrict the source to your trusted IP address or use a safer managed access method. Avoid exposing SSH to everyone unnecessarily.
+
+
+
+Here, 0.0.0.0/0 means all IPv4 addresses. For IPv6, the equivalent all-addresses range is ::/0.
+4. Security Group vs. Network ACL
+Feature	Security Group	Network ACL
+Level	Network interface / instance association	Subnet
+Stateful?	Yes	No
+Rules	Allow only	Allow and deny
+Rule evaluation	All applicable rules are evaluated together	Rules evaluated in number order
+Return traffic	Automatically allowed for tracked connections	Must be permitted separately
+Memory trick: SG = Stateful Guard. NACL = Numbered, Stateless subnet filter.

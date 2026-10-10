@@ -1,0 +1,67 @@
+AWS AMI — Amazon Machine Image
+AWS Certified Cloud Practitioner (CLF-C02) | Stéphane Maarek course notes
+An AMI (Amazon Machine Image) is a template used to launch EC2 instances. It provides the information needed to configure the instance's operating system and software.
+Think of an AMI as a preconfigured computer blueprint.
+
+
+
+
+
+
+
+medium.com
+
+
+1. What does an AMI contain?
+An AMI typically defines:
+- Operating system: For example, Amazon Linux, Ubuntu, or Windows Server.
+- Software and configuration: Applications or packages installed in the image.
+- Root volume information: The storage configuration used to launch the instance.
+- Launch permissions: Which AWS accounts are allowed to use the AMI.
+- Block device mappings: The EBS volumes or instance-store volumes configured for the launched instance.
+An AMI is a template, not a running EC2 instance.
+2. How an AMI works
+AMI
+Operating system + configured software
+
+Launch instances from the same image
+EC2 #1
+
+EC2 #2
+
+EC2 #3
+
+
+
+For example, if you configure one EC2 instance with Ubuntu, Python, and your Flask application, you can create an AMI from that instance and use it to launch additional instances with the same base configuration.
+Each instance runs independently after launch.
+3. Types of AMIs
+AMI type	Description
+AWS-provided AMI	Published by AWS, such as Amazon Linux
+AWS Marketplace AMI	Published by third-party vendors; some images require payment or subscriptions
+Community AMI	Shared publicly by other AWS users or publishers
+Custom AMI	Created to meet your own requirements
+Exam tip: A custom AMI lets you reuse a prepared server configuration rather than install and configure everything manually for every new instance.
+4. Creating a custom AMI
+A common workflow is:
+1. Launch an EC2 instance using an existing AMI.
+2. Install and configure your software.
+3. Create an AMI from the configured instance.
+4. Launch new EC2 instances using that AMI.
+AWS generally creates the necessary snapshots for EBS-backed AMIs. The original instance can typically continue running while the AMI is created, although rebooting during image creation helps improve filesystem consistency.
+5. AMI vs. EBS vs. User Data
+These three concepts are often confused in the exam.
+Feature	AMI	EBS	User Data
+Purpose	Instance launch template	Block storage	Startup automation
+Example	Ubuntu image with Python installed	Disk holding application files	Script installing Apache
+Main benefit	Reusable configuration	Persistent storage	Automated setup
+Memory trick:
+- AMI = Blueprint
+- EBS = Hard drive
+- User Data = Startup instructions
+6. AMI sharing and Regions
+Remember these exam points:
+- AMIs are Regional resources. To use an AMI in another Region, copy it to that Region.
+- AMIs can be shared with specified AWS accounts, or made public when appropriate.
+- Sharing an AMI does not automatically share every dependent resource or grant access to unrelated encrypted snapshots and KMS keys. Required permissions must also be configured.
+- You can deregister an AMI when it is no longer needed. Deregistering an AMI does not automatically delete its associated EBS snapshots.

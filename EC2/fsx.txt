@@ -1,0 +1,93 @@
+AWS FSx — CLF-C02
+Amazon FSx is a family of fully managed file storage services that provides specialized file systems for different workloads. AWS handles much of the underlying infrastructure, including maintenance and availability features depending on the file system chosen.
+Think of EFS as a general-purpose shared file system, while FSx provides specialized file systems for Windows, enterprise workloads, and high-performance computing.
+1. The four main Amazon FSx options
+
+
+
+
+
+
+
+
+
+1. Amazon FSx for Windows File Server
+Provides fully managed Windows-native file storage.
+- Supports the SMB protocol.
+- Integrates with Microsoft Active Directory.
+- Supports Windows access controls and Windows file-system features.
+Use case: A company migrating Windows applications and shared folders to AWS.
+
+
+
+
+
+
+
+
+
+
+
+
+2. Amazon FSx for Lustre
+Provides a high-performance parallel file system.
+- Designed for compute-intensive workloads.
+- Can integrate with Amazon S3 for data access and processing workflows.
+- Suitable for high-throughput parallel processing.
+Use case: Machine learning training, scientific computing, and media processing.
+
+
+
+
+
+
+
+
+
+
+
+
+3. Amazon FSx for NetApp ONTAP
+Provides managed NetApp ONTAP storage with enterprise data-management capabilities.
+- Supports protocols including NFS and SMB.
+- Supports iSCSI for block-storage access.
+- Offers features such as snapshots, cloning, and data replication.
+Use case: Migrating enterprise workloads that already depend on NetApp storage features.
+
+
+
+
+
+
+
+
+
+
+
+
+4. Amazon FSx for OpenZFS
+Provides managed file storage based on the OpenZFS file system.
+- Supports NFS access.
+- Offers snapshots and low-latency file operations.
+- Supports fast cloning capabilities.
+Use case: Workloads that need OpenZFS features and high-performance shared file storage.
+
+
+
+2. EFS vs. FSx
+Feature	Amazon EFS	Amazon FSx
+Main purpose	Elastic, general-purpose file storage	Specialized managed file systems
+Common use	Shared Linux application files	Windows shares, HPC, enterprise storage
+Protocols	NFS	Depends on the FSx file system
+Windows-native SMB	Not its primary interface	FSx for Windows File Server
+High-performance computing	Possible for some workloads	FSx for Lustre is purpose-built for HPC
+Exam memory trick:
+- Windows + SMB + Active Directory → FSx for Windows File Server
+- HPC + parallel processing + S3 integration → FSx for Lustre
+- NetApp enterprise storage → FSx for NetApp ONTAP
+- OpenZFS features + NFS → FSx for OpenZFS
+3. Scenario-based examples
+- A company needs a shared Windows file server for employees → FSx for Windows File Server.
+- A research team processes huge datasets for machine learning → FSx for Lustre.
+- An enterprise wants to migrate existing NetApp workloads → FSx for NetApp ONTAP.
+- An application needs OpenZFS snapshots and cloning → FSx for OpenZFS.

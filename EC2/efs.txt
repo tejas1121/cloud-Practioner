@@ -1,0 +1,83 @@
+AWS EFS — Elastic File System
+AWS Certified Cloud Practitioner (CLF-C02) | Stéphane Maarek course notes
+Amazon EFS (Elastic File System) is a fully managed, elastic file storage service that multiple EC2 instances can access concurrently.
+Think of EFS as a shared network folder for your EC2 servers.
+1. What is EFS?
+Suppose you have three EC2 instances running the same web application. All three need to read and write the same uploaded images and documents.
+- With separate EBS volumes, each server has its own storage by default.
+- With EFS, all three servers can access a shared file system.
+EC2 A
+
+
+EC2 B
+
+
+EC2 C
+
+
+
+Amazon EFS
+One shared file system
+Concurrent access
+
+
+2. Key features of EFS
+- Shared access: Multiple EC2 instances can access the same file system simultaneously.
+- Elastic capacity: Storage grows and shrinks as files are added and removed; you don't need to pre-provision a fixed capacity for standard EFS file systems.
+- Managed service: AWS manages the underlying file storage infrastructure.
+- High availability options: Regional EFS file systems store data redundantly across multiple Availability Zones within a Region.
+- Linux file system: EFS uses the NFS protocol, commonly NFSv4.0 and NFSv4.1, for mounting supported clients.
+- Pay for storage used: Standard EFS storage classes are billed based on usage, with other charges depending on the storage class, throughput configuration, and access patterns.
+Exam memory trick: EFS = Elastic, shared File System.
+3. EFS vs. EBS vs. Instance Store
+This is one of the most important comparisons for AWS certification exams.
+Feature	EFS	EBS	Instance Store
+Storage type	File storage	Block storage	Local block storage
+Sharing	Multiple instances concurrently	Usually attached to one instance at a time; supported Multi-Attach configurations are exceptions	Tied to the host and instance
+Availability	Regional or One Zone options	AZ-specific	Host-dependent
+Persistence	Persistent	Persistent	Temporary
+Capacity	Elastic	Provisioned volume size	Depends on instance type
+Typical use	Shared files and directories	OS, databases, application disks	Caches and temporary data
+Memory trick:
+- EFS: Shared folder
+- EBS: Virtual hard drive
+- Instance Store: Temporary local disk
+4. EFS storage classes
+EFS offers storage classes designed for different access patterns.
+
+EFS Standard
+For frequently accessed files requiring the performance and availability characteristics of the Regional storage class.
+
+
+
+
+EFS Infrequent Access (IA)
+For files accessed less frequently, typically at a lower storage rate with access charges. Lifecycle management can transition eligible files into this class.
+
+
+
+
+EFS Archive
+For rarely accessed files, with lower storage costs and access charges. Lifecycle management can move eligible files into Archive.
+
+
+
+EFS also provides One Zone storage classes, which store data in a single Availability Zone and can cost less than the corresponding Regional classes. They have different availability and resilience characteristics.
+For the exam, focus on the principle: frequently accessed data → Standard; less frequently accessed data → IA; rarely accessed data → Archive.
+5. When should you use EFS?
+Use EFS when a workload requires shared file access and elastic storage, such as:
+- Multiple Linux EC2 web servers sharing uploaded files.
+- Shared directories for content management systems.
+- Application workloads that need a common file system.
+- Data shared among multiple compute instances.
+For example, in a load-balanced web application, several EC2 instances can mount the same EFS file system so that files uploaded through one instance are accessible through the others.
+EFS is not the same as S3: EFS provides a mounted file system, while S3 stores objects in buckets.
+6. EFS networking and security
+To connect an EC2 instance to EFS:
+1. Create an EFS file system.
+2. Configure mount targets in the required Availability Zones and VPC subnets.
+3. Configure the EFS security group to allow inbound NFS traffic on TCP port 2049 from the EC2 instances' security group.
+4. Mount the file system on the EC2 instance using the appropriate NFS client and mount configuration.
+Exam-critical port: 2049
+
+EFS uses NFS, which commonly uses TCP port 2049. Do not confuse it with SSH (22), HTTP (80), or HTTPS (443).

@@ -1,0 +1,127 @@
+EC2 purchasing options determine how you pay for compute capacity, how much flexibility you have, and whether you can commit to using resources for a longer period.
+For the AWS Certified Cloud Practitioner exam, focus on these options:
+- On-Demand Instances
+- Reserved Instances
+- Savings Plans
+- Spot Instances
+- Dedicated Hosts
+- Dedicated Instances
+- Capacity Reservations
+The key is to match the purchasing option to the workload and business requirement.
+1. On-Demand Instances
+
+
+
+
+
+
+
+
+
+Maximum flexibility
+Pay for compute capacity as you use it, without a long-term commitment.
+Best for: Short-term workloads, development environments, unpredictable demand, and applications you want to start or stop without a term commitment.
+Trade-off: Typically costs more per unit than options with qualifying long-term commitments.
+
+
+Example: You need an EC2 server for a college project for a few days. On-Demand is a straightforward choice.
+Exam keyword: No long-term commitment.
+2. Reserved Instances (RIs)
+Reserved Instances offer discounted pricing in exchange for a commitment, generally for 1 year or 3 years, with payment options that can include No Upfront, Partial Upfront, and All Upfront.
+- Standard RI: Greater discount potential, but less flexibility to change attributes.
+- Convertible RI: Allows exchanges for qualifying configurations, with more flexibility and typically a lower maximum discount than comparable Standard RIs.
+Best for: Predictable workloads that run for long periods, such as a production database or a steady application server.
+Important: An RI is primarily a billing discount commitment; it is not itself a physical EC2 instance. Regional RIs generally apply to matching instance usage, while zonal RIs can also provide a capacity reservation.
+3. Savings Plans
+Savings Plans offer lower compute prices when you commit to a consistent amount of usage, measured in dollars per hour, for 1 or 3 years. 
+
+Amazon Elastic Compute Cloud
++1
+
+
+
+Two types are especially relevant to EC2:
+- Compute Savings Plans: More flexible. They can apply across EC2 instance families and Regions, and also cover eligible AWS Fargate and Lambda usage.
+- EC2 Instance Savings Plans: Less flexible, but can offer larger discounts. They apply to a specific EC2 instance family in a chosen Region.
+Example: Your applications use EC2 regularly, but you may change instance sizes or Regions. A Compute Savings Plan can be a better fit than committing to a particular configuration.
+Exam keyword: Commit to a consistent amount of compute usage, not a specific instance configuration.
+4. Spot Instances
+
+
+
+
+
+
+
+
+
+Potentially lowest compute cost
+Spot Instances use spare EC2 capacity available in AWS. They can offer discounts of up to 90% compared with On-Demand pricing, but AWS can interrupt them when it needs the capacity back. 
+
+AWS
++1
+
+
+
+
+
+Best for:
+- Batch processing
+- Data analysis
+- CI/CD workloads
+- Fault-tolerant distributed computing
+- Jobs that can pause, retry or restart
+Not ideal for: A critical application that cannot tolerate interruptions unless you have designed for recovery and replacement capacity.
+Exam keyword: Spare capacity + deep discount + interruptions.
+5. Dedicated Hosts
+A Dedicated Host is a physical server dedicated to your use. It provides visibility into physical sockets and cores, and can help you use eligible existing server-bound software licenses. 
+
+Amazon Elastic Compute Cloud
++1
+
+
+
+Best for:
+- Licensing requirements tied to physical cores or sockets
+- Compliance requirements requiring dedicated physical hardware
+- Workloads that need control over instance placement on the host
+Exam keyword: Physical server dedicated to you + licensing visibility.
+6. Dedicated Instances
+Dedicated Instances run on hardware dedicated to a single AWS account, but they do not provide the same host-level visibility and placement control as Dedicated Hosts. 
+
+AWS Decision Guides
++1
+
+
+
+Best for: Workloads requiring hardware-level isolation from instances belonging to other AWS accounts.
+Dedicated Host vs. Dedicated Instance
+Feature	Dedicated Host	Dedicated Instance
+Hardware	Dedicated physical server	Hardware dedicated to one account
+Host/socket/core visibility	Yes	No equivalent host-level visibility
+Control over placement	Greater	Less
+Existing server-bound licensing	Often useful	Less suited to host-level license requirements
+Memory trick: Host = hardware visibility and control. Instance = account-level hardware isolation.
+7. Capacity Reservations
+Capacity Reservations let you reserve EC2 compute capacity in a specific Availability Zone, helping ensure capacity is available when needed. They do not automatically provide a billing discount. 
+
+Amazon Elastic Compute Cloud
++1
+
+
+
+Example: Your company must launch a particular EC2 configuration in a specific Availability Zone during a critical business event. You can use a Capacity Reservation to help secure the required capacity.
+Remember the distinction:
+- Reserved Instances → primarily a billing discount commitment; zonal RIs also provide capacity reservation benefits.
+- Savings Plans → billing discounts; no capacity reservation by themselves.
+- Capacity Reservations → capacity assurance, billed at On-Demand rates before any applicable discount.
+8. Compare the purchasing options
+Option	Commitment	Main advantage	Main limitation
+On-Demand	None	Flexibility	Usually higher unit cost
+Reserved Instances	1 or 3 years	Discount for matching usage	Configuration commitment
+Savings Plans	1 or 3 years	Discount with usage commitment	Pay for committed usage
+Spot	No long-term commitment	Large potential discount	Can be interrupted
+Dedicated Host	Depends on pricing option	Physical host control and licensing support	Higher management and cost considerations
+Dedicated Instance	Depends on pricing option	Single-account hardware dedication	Less host-level control
+Capacity Reservation	No commitment for immediate-use reservations	Reserve capacity in a specific AZ	Capacity is charged even if unused
+Official reference: Amazon EC2 purchasing options — AWS documentation

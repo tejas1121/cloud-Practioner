@@ -1,0 +1,235 @@
+EC2 sizing and configuration options
+When launching an EC2 instance, you configure several components.
+
+
+
+
+
+
+
+
+
+1. AMI (Amazon Machine Image)
+The template used to launch the instance. It contains the operating system and may include preinstalled software and configuration.
+Examples: Amazon Linux, Ubuntu, Windows Server.
+
+
+
+
+
+
+
+
+
+
+
+
+2. Instance type
+Determines the instance's compute resources, including vCPUs, memory, networking capabilities and, depending on the family, storage capabilities.
+Examples: t3.micro, m7i.large, c7i.large.
+
+
+
+
+
+
+
+
+
+
+
+
+3. Key pair
+Used for supported authentication methods to connect to an instance, such as SSH for Linux or certain Windows access workflows.
+A key pair is not the same as an IAM user password.
+
+
+
+
+
+
+
+
+
+
+
+
+4. Security group
+A virtual firewall controlling inbound and outbound traffic for an instance's network interfaces.
+Example: Allow inbound HTTPS traffic on TCP port 443.
+
+
+
+
+
+
+
+
+
+
+
+
+5. Storage
+Configure the root volume and any additional storage volumes. EBS volumes provide persistent block storage; instance store provides temporary storage tied to the host.
+
+
+
+
+
+
+
+
+
+
+
+
+6. User data
+Optional startup instructions that can automate initial configuration, such as installing packages or starting an application.
+
+
+
+Other launch options include the VPC and subnet, IAM instance profile, network settings, instance count, and purchasing options.
+Exam tip: AMI = software/OS template; instance type = hardware capacity; security group = traffic rules; user data = startup automation.
+2. EC2 User Data
+User data allows you to run startup scripts when launching an instance. It is commonly used for bootstrapping a server.
+For Linux instances, a typical user data script looks like this:
+#!/bin/bash
+dnf update -y
+dnf install -y httpd
+systemctl enable --now httpd
+echo "Hello from EC2" > /var/www/html/index.html
+
+
+This example, for a compatible Amazon Linux version, updates packages, installs Apache HTTP Server, starts it, and creates a simple webpage.
+How user data works
+Launch EC2 instance
+
+
+Instance boots and processes user data
+
+
+Software is installed and configured
+
+
+Application is ready to run
+
+
+Important user data facts
+- User data is commonly used for automated initial setup.
+- On Linux, user data scripts generally run as root.
+- By default, user data scripts run only during the first boot. Special configurations can enable later executions.
+- User data is not a secure place for passwords, API keys, or other secrets.
+- User data is distinct from an AMI: an AMI is the template; user data is the startup instruction.
+Exam trap: Do not assume user data runs every time an instance reboots.
+3. EC2 instance types
+An instance type determines the compute resources available to your workload. AWS groups instance types into families optimized for different purposes.
+
+
+
+
+
+
+
+
+
+General purpose — T, M families
+Balanced CPU, memory and networking resources.
+Use cases: Web servers, development environments, small databases and application servers.
+Examples: t3.micro, m7i.large.
+
+
+
+
+
+
+
+
+
+
+
+
+Compute optimized — C family
+Higher compute capacity relative to memory.
+Use cases: Batch processing, high-performance web servers, scientific modeling and CPU-intensive workloads.
+Example: c7i.large.
+
+
+
+
+
+
+
+
+
+
+
+
+Memory optimized — R, X, u families
+Designed for workloads that need large amounts of RAM.
+Use cases: In-memory databases, real-time analytics and large enterprise databases.
+Example: r7i.large.
+
+
+
+
+
+
+
+
+
+
+
+
+Storage optimized — I, D, H families
+Designed for high local storage throughput, I/O operations or large storage capacity.
+Use cases: Distributed databases, data warehousing and large-scale transactional processing.
+Example: i4i.large.
+
+
+
+
+
+
+
+
+
+
+
+
+Accelerated computing — P, G, Inf, Trn families
+Uses accelerators such as GPUs or AWS-designed chips for specialized workloads.
+Use cases: Machine learning, AI inference, graphics rendering and high-performance computing.
+Examples: p families for GPU-intensive computing, g families for graphics and certain ML workloads, inf for inference, and trn for training.
+
+
+
+Instance type naming
+Consider m7i.large:
+Part	Meaning
+m	Instance family: general purpose
+7	Generation
+i	Additional family or platform identifier
+large	Size within the family
+Instance sizes commonly include nano, micro, small, medium, large, xlarge, and larger multiples such as 2xlarge.
+The exact available sizes depend on the family and generation.
+4. How to choose an instance type
+Requirement	Likely family
+Small test server with variable CPU demand	T
+Balanced application server	M
+CPU-intensive processing	C
+Large in-memory database	R or X
+High local disk I/O	I
+GPU-based ML training	P
+GPU graphics workloads	G
+For the exam, you usually need to recognize the workload category, not memorize every model number.
+5. Quick exam revision
+- AMI: Defines the image used to create an instance.
+- Instance type: Determines compute capacity and resource characteristics.
+- User data: Automates initial startup configuration.
+- Security group: Controls allowed network traffic.
+- Key pair: Supports supported instance login methods.
+- T family: Burstable general-purpose workloads.
+- C family: Compute optimized.
+- R family: Memory optimized.
+- I family: Storage optimized.
+- P/G families: GPU-accelerated workloads.

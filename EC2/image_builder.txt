@@ -1,0 +1,68 @@
+Amazon EC2 Image Builder is an AWS service that automates the creation, customization, testing, and distribution of machine images, such as Amazon Machine Images (AMIs).
+Think of it as an automated factory for building secure, standardized EC2 images.
+1. Why do we need EC2 Image Builder?
+Suppose you need to launch 50 EC2 instances, each with:
+- Amazon Linux
+- Python and Docker installed
+- Security updates applied
+- Your application dependencies configured
+- Security and functionality tests completed
+You could configure an instance manually and create an AMI, but repeating that process is time-consuming and error-prone.
+EC2 Image Builder automates this workflow, helping you produce consistent images repeatedly.
+1. Choose a base image
+Example: Amazon Linux AMI
+
+2. Customize the image
+Install software, patches and configurations
+
+3. Test the image
+Run configured validation and security checks
+
+4. Distribute the image
+Make the resulting AMI available for launches
+
+
+2. How EC2 Image Builder works
+The workflow is defined using several important concepts:
+Component	Purpose
+Source image	The starting AMI or supported image
+Build component	Instructions to install software, apply updates or customize the image
+Test component	Instructions to validate the resulting image
+Image recipe	Defines the source image and the components used to build it
+Infrastructure configuration	Defines the infrastructure used during the build and test process
+Distribution configuration	Defines where and how the resulting image is distributed
+Image pipeline	Automates the overall build, test and distribution workflow
+You don't need to memorize every configuration detail for CLF-C02. Understand the overall automation process and the purpose of the service.
+3. EC2 Image Builder vs. creating an AMI manually
+Feature	Manual AMI creation	EC2 Image Builder
+Image creation	Administrator performs the steps	Automates the defined workflow
+Software installation	Can be manual	Defined through build components
+Testing	Must be arranged separately	Supports configured test components
+Recurring builds	Requires manual work or separate automation	Supports scheduled pipeline executions
+Best use	One-off or simple image creation	Repeatable, standardized image production
+EC2 Image Builder can also help keep images updated by rebuilding them according to your pipeline configuration and schedule.
+4. EC2 Image Builder vs. related AWS services
+These are useful distinctions for exam questions.
+Service	Main purpose
+EC2 Image Builder	Automates building, testing and distributing machine images
+Amazon EC2	Runs virtual servers
+AMI	The machine image used to launch EC2 instances
+AWS Systems Manager	Helps manage and operate AWS resources, including patching supported instances
+AWS Elastic Beanstalk	Simplifies application deployment and environment management
+Exam trap: EC2 Image Builder does not replace EC2 or the AMI. It automates the process of producing images that can be used to launch EC2 instances.
+5. Practical example
+Suppose you're maintaining your NovaSRE cloud infrastructure and want all EC2-based monitoring servers to use the same approved configuration.
+You could define an Image Builder pipeline that:
+1. Starts from a supported base AMI.
+2. Installs monitoring agents and required dependencies.
+3. Applies approved configuration and updates.
+4. Runs tests to check that the agents and required services work.
+5. Distributes the resulting AMI to the required AWS Region or accounts, with the necessary permissions.
+This improves repeatability and reduces differences between servers.
+6. CLF-C02 memory points
+- Image Builder = automated image factory.
+- AMI = reusable machine image.
+- Build components = customize the image.
+- Test components = validate the image.
+- Image pipeline = automate the workflow.
+- Distribution configuration = control where the resulting image goes.

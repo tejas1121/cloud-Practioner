@@ -1,0 +1,108 @@
+
+Amazon EBS (Elastic Block Store) provides persistent block storage for EC2 instances. Think of it as a virtual hard drive that you attach to an EC2 instance.
+1. What is EBS?
+
+
+
+
+
+
+
+blog.arishahmad.in
+
+
+Suppose you launch an EC2 instance to host a web application. The instance needs storage for its operating system, application files, logs, and database files. An EBS volume can provide that storage.
+Key characteristics:
+- Persistent storage: Data normally remains when the attached EC2 instance is stopped or terminated, depending on the volume's configuration and lifecycle settings.
+- Block storage: Data is presented as blocks, like a disk drive.
+- Availability Zone specific: An EBS volume exists in one Availability Zone and can be attached only to an instance in the same AZ.
+- Resizable: You can increase volume size and change supported performance settings.
+- Independent lifecycle: An EBS volume can exist independently of an EC2 instance.
+Exam memory trick: EC2 = virtual server; EBS = virtual hard drive.
+2. EBS vs. Instance Store
+Feature	EBS	Instance Store
+Storage type	Network-attached block storage	Physically attached host storage
+Persistence	Designed for persistent data	Temporary; data may be lost when the instance stops, terminates, or the underlying host fails
+Detach and reattach	Supported, subject to restrictions	Not supported as an independent volume
+Typical use	OS, databases, important files	Caches, buffers, temporary data
+Independent lifecycle	Yes	No
+Exam trap: If an instance stops, EBS data generally persists. Instance store data is temporary and must not be relied on for durable storage.
+3. EBS volume types
+AWS groups EBS volumes into SSD-backed and HDD-backed types. For the CLF-C02 exam, remember the use case for each family.
+
+
+
+
+
+
+
+
+
+A. SSD — Solid State Drive
+Best for workloads requiring fast, low-latency access.
+- gp3 / gp2 — General Purpose SSD: Balanced price and performance; suitable for boot volumes, development environments, and many applications.
+- io2 / io1 — Provisioned IOPS SSD: Designed for I/O-intensive workloads that need consistently high IOPS, such as critical databases.
+
+
+
+
+
+
+
+
+
+
+
+
+B. HDD — Hard Disk Drive
+Best for throughput-oriented workloads where latency is less critical.
+- st1 — Throughput Optimized HDD: Frequently accessed, large sequential workloads such as big data and log processing.
+- sc1 — Cold HDD: Infrequently accessed data where low cost is the priority.
+
+
+
+Quick comparison
+Volume type	Main purpose	Example
+gp3	General-purpose performance	Web application
+io2	High-performance, I/O-intensive workloads	Critical database
+st1	High-throughput sequential workloads	Big data processing
+sc1	Infrequently accessed, low-cost data	Cold data
+Exam memory trick: gp = general purpose, io = IOPS, st = throughput, sc = cold storage.
+Note: st1 and sc1 are HDD types and cannot be used as boot volumes. EBS volumes are not the same as Amazon S3 object storage.
+4. EBS Snapshots
+An EBS snapshot is a point-in-time backup of an EBS volume, stored and managed by AWS using Amazon S3 infrastructure.
+EBS Volume
+Data stored on a virtual disk
+
+EBS Snapshot
+Point-in-time backup
+
+Restore
+Create a new EBS volume from the snapshot
+
+
+Important points:
+- Snapshots are incremental: after the first snapshot, subsequent snapshots generally store only changed blocks.
+- You can use a snapshot to create a new EBS volume, including in another AZ.
+- Snapshots can help with backup, recovery, and migration workflows.
+- Snapshots of encrypted volumes remain encrypted; AWS supports encryption-aware snapshot copy workflows.
+- For database consistency, coordinate the snapshot with the application or database's backup procedures when necessary.
+Exam trap: An EBS volume is AZ-specific; a snapshot can be used to create a volume in another AZ.
+5. EBS encryption
+EBS encryption protects data at rest and supports encryption of data moving between an EC2 instance and an attached EBS volume.
+AWS KMS can manage the encryption keys used for EBS encryption.
+Encryption can protect:
+- Data stored on the volume.
+- Snapshots created from encrypted volumes.
+- Volumes created from encrypted snapshots.
+Example: A company stores customer records on an EBS volume and needs encryption at rest. It can use an encrypted EBS volume with an appropriate KMS key.
+6. Important EBS exam distinctions
+Question clue	Correct concept
+Persistent block storage for EC2	EBS
+Temporary, host-attached storage	Instance Store
+Point-in-time volume backup	EBS Snapshot
+General-purpose SSD	gp3 / gp2
+High IOPS database workload	io2 / io1
+High-throughput sequential workload	st1
+Low-cost, infrequently accessed HDD data	sc1
+Move a volume to a different AZ	Snapshot, then create a volume in the target AZ

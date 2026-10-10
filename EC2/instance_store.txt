@@ -1,0 +1,54 @@
+EC2 Instance Store provides temporary, block-level storage physically attached to the host computer running an EC2 instance.
+Think of it as a fast local disk inside the physical server hosting your EC2 instance.
+1. What is Instance Store?
+
+
+
+
+
+
+
+dev.to
+
+
+Unlike Amazon EBS, which is network-attached storage, Instance Store uses disks physically attached to the host.
+Key characteristics:
+- Temporary storage: Data can be lost when an instance is stopped, terminated, or the underlying host experiences a failure, depending on the event and instance configuration.
+- High performance: Local storage can provide high throughput and low latency.
+- Host-dependent: Storage is tied to the physical host and is not an independently managed volume.
+- Not suitable as the only copy of important data: You should maintain durable copies elsewhere.
+2. Instance Store vs. EBS
+Feature	EC2 Instance Store	Amazon EBS
+Storage location	Physically attached to the host	Network-attached block storage
+Persistence	Temporary; may be lost during lifecycle or host events	Designed for persistent storage
+Detach and reattach	No independent volume lifecycle	Supported, subject to restrictions
+Typical use	Caches, scratch data, temporary processing	OS, databases, application data
+Independent snapshots	No direct EBS-style volume snapshots	Supports EBS snapshots
+Billing	Included with supported instance capacity	Storage and applicable performance charges
+Exam memory trick: Instance Store = temporary local disk. EBS = persistent virtual disk.
+3. When should you use Instance Store?
+
+Caching
+Store frequently accessed temporary data that can be regenerated if lost.
+
+
+
+
+Temporary processing
+Use scratch space for intermediate files during batch jobs or data processing.
+
+
+
+
+Replicated distributed systems
+Use local storage for data that can be recovered from replicas or another durable source.
+
+
+
+Avoid using Instance Store as the only location for critical database records, irreplaceable files, or backups.
+4. Important exam traps
+- Instance Store is not the same as EBS.
+- Instance Store data is not guaranteed to survive instance stop, termination, or host failure.
+- Not every EC2 instance type supports Instance Store.
+- Instance Store cannot be detached and reattached to another instance like an EBS volume.
+- If you need persistent storage, EBS is generally the appropriate choice; S3 is suitable for durable object storage.
