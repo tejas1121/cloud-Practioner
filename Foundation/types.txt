@@ -1,0 +1,157 @@
+1. Types of Cloud Computing
+There are three main cloud service models:
+
+
+
+
+
+
+
+
+
+1. IaaS — Infrastructure as a Service
+Provides fundamental computing infrastructure such as virtual machines, storage, and networking.
+- You manage the operating system, applications, and data.
+- The provider manages the physical infrastructure.
+AWS example: Amazon EC2.
+Memory trick: Rent the infrastructure; manage much of the software stack.
+
+
+
+
+
+
+
+
+
+
+
+
+2. PaaS — Platform as a Service
+Provides a managed platform for building, testing, and deploying applications.
+- You focus on application code and data.
+- The provider manages more of the underlying infrastructure and runtime.
+AWS example: AWS Elastic Beanstalk, which simplifies application deployment and environment management.
+Memory trick: Focus on building the application, not managing the platform.
+
+
+
+
+
+
+
+
+
+
+
+
+3. SaaS — Software as a Service
+Provides a complete application that users access over a network.
+- The provider manages the application and its infrastructure.
+- Users primarily configure and use the software.
+Examples: Gmail, Salesforce, Microsoft 365.
+Memory trick: Just use the software.
+
+
+
+IaaS vs PaaS vs SaaS
+Responsibility	IaaS	PaaS	SaaS
+Physical hardware	Provider	Provider	Provider
+Operating system	Customer	Provider manages it	Provider
+Runtime/platform	Customer manages it	Provider manages it	Provider
+Application	Customer	Customer	Provider
+Usage	Customer	Customer	Customer
+This table is a simplified model; exact responsibilities depend on the service.
+Exam trap: AWS EC2 is IaaS. Elastic Beanstalk is a PaaS-style deployment service. Gmail is SaaS.
+
+2. Cloud Pricing Models
+Cloud pricing lets you choose how you pay for computing resources. The best option depends on whether your workload is temporary, predictable, or flexible.
+A. Three fundamental cloud pricing principles
+
+Pay as you go
+Pay for resources as you consume them instead of purchasing all the infrastructure upfront.
+Example: Pay for EC2 compute usage and S3 storage according to their pricing rules.
+
+
+
+Pay less when you use more or commit
+Volume-based discounts or commitment-based pricing can reduce the effective cost of eligible usage.
+
+
+
+Measure usage
+AWS pricing can depend on compute duration, storage consumed, requests, data transfer, and other service-specific metrics.
+
+
+
+B. EC2 purchasing options
+These are especially important for the exam.
+1. On-Demand Instances
+Flexible
+
+Pay for compute capacity without a long-term commitment.
+Best for: Short-term workloads, unpredictable usage, and development or testing.
+Example: You need an EC2 instance for a college project for a few hours.
+
+
+2. Reserved Instances
+Commitment
+
+Commit to specified instance attributes and a one-year or three-year term for eligible EC2 configurations and receive discounted pricing.
+Best for: Predictable, steady-state EC2 workloads.
+Example: A production server runs consistently throughout the year.
+Exam note: Standard and Convertible Reserved Instances have different flexibility rules.
+
+
+3. Savings Plans
+Commitment
+
+Commit to a consistent amount of eligible compute usage measured in dollars per hour, usually for one or three years, in exchange for lower prices.
+Best for: Predictable compute spending with more flexibility than many instance-specific discounts.
+Example: A company commits to eligible compute usage rather than relying entirely on On-Demand rates.
+
+
+4. Spot Instances
+Lowest-cost option
+
+Use spare EC2 capacity at discounted prices. AWS can interrupt Spot Instances when it needs the capacity back.
+Best for: Fault-tolerant, interruptible workloads such as batch processing.
+Example: Processing a large dataset where interrupted tasks can resume later.
+
+
+5. Dedicated Hosts
+Physical servers dedicated to your use, providing visibility and control over host-level placement and potentially supporting certain licensing requirements.
+Best for: Workloads requiring dedicated physical server control or specific software licensing arrangements.
+
+
+Pricing memory trick
+- On-Demand: No long-term commitment.
+- Reserved: Commit for eligible instance usage.
+- Savings Plans: Commit to eligible compute spend.
+- Spot: Spare capacity, interruption risk.
+- Dedicated Host: Dedicated physical server.
+One subtle but important distinction: Reserved Instances are primarily a pricing benefit for eligible EC2 usage; they are not a universal guarantee that capacity will always be available. Capacity reservations are a separate concept.
+
+C. AWS compute pricing example
+Suppose an eligible EC2 configuration costs ₹10 per hour at its On-Demand rate.
+If it runs for 100 hours:
+\[
+100 \times ₹10 = ₹1{,}000
+\]
+
+If an eligible pricing commitment reduces the effective rate to ₹6 per hour for that usage:
+\[
+100 \times ₹6 = ₹600
+\]
+
+The illustrative saving is ₹400, or 40%.
+Actual AWS prices depend on the Region, instance type, operating system, discounts, and other charges. This is an example, not a current AWS quote.
+D. Other pricing concepts to know
+Concept	Meaning
+Data transfer	Charges can apply when data moves between locations or out to the internet.
+Storage pricing	Depends on the service, storage class, capacity, requests, and retrieval.
+Free Tier	Certain services offer free usage subject to specific limits and eligibility.
+AWS Pricing Calculator	Estimates the expected cost of an architecture before deployment.
+AWS Cost Explorer	Analyzes historical spending and usage patterns.
+AWS Budgets	Sets cost or usage budgets and can send alerts.
+Exam trap: AWS Budgets can alert you when spending approaches a threshold, but creating a budget does not automatically stop your resources or guarantee that you won't incur additional charges

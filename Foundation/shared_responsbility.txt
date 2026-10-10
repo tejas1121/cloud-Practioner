@@ -1,0 +1,96 @@
+What is the Shared Responsibility Model?
+The AWS Shared Responsibility Model divides security and compliance responsibilities between AWS and the customer.
+- AWS is responsible for security OF the cloud.
+- The customer is responsible for security IN the cloud.
+AWS: Security OF the cloud
+
+AWS protects the infrastructure that runs its services.
+- Physical data centers and facilities
+- Physical servers and storage hardware
+- Networking infrastructure
+- Virtualization infrastructure
+- Security of the underlying cloud infrastructure
+
+Customer: Security IN the cloud
+
+Customers protect their workloads and configure the AWS services they use.
+- Data and data classification
+- IAM users, roles, permissions and credentials
+- Encryption configuration where applicable
+- Operating system patching on EC2
+- Network access rules and application security
+
+
+Memory trick: AWS secures the cloud infrastructure; you secure what you put in the cloud and how you configure it.
+2. Example: Hosting a website on EC2
+Suppose you deploy your NovaSRE application on an Amazon EC2 instance.
+
+
+
+
+
+
+
+docs.aws.amazon.com
+
+
+Task	Responsible party
+Physical security of the server	AWS
+Physical networking and hardware	AWS
+Hypervisor and underlying virtualization infrastructure	AWS
+Guest operating system updates on EC2	Customer
+Application code and dependencies	Customer
+IAM permissions	Customer
+Security group configuration	Customer
+Data protection and access permissions	Customer
+Exam scenario: Your EC2 server is compromised because you failed to patch a vulnerable operating system. Who is responsible for patching the guest OS?
+Answer: The customer.
+AWS maintains the underlying infrastructure, but you manage the guest operating system on a standard EC2 instance.
+
+3. How responsibilities change by service
+This is a common exam trap: the more AWS manages, the fewer infrastructure tasks the customer must manage.
+Amazon EC2
+More customer responsibility
+
+Infrastructure as a Service (IaaS)
+The customer manages the guest OS, patches, installed software, applications, IAM configuration and data security. AWS manages the physical infrastructure and underlying virtualization.
+
+Amazon RDS
+Shared management
+
+Managed database service
+AWS manages much of the underlying infrastructure and database administration, such as routine infrastructure maintenance and supported patching. The customer remains responsible for data, access permissions, appropriate configuration and workload-specific security.
+
+Amazon S3
+Managed storage
+
+Object storage
+AWS manages the underlying storage infrastructure. The customer manages data classification, access policies, appropriate permissions, and encryption settings where applicable.
+
+AWS Lambda
+Serverless
+
+AWS manages the underlying servers, operating system and runtime infrastructure. The customer manages function code, dependencies, permissions, data and application-level security.
+
+Important: Managed services reduce operational responsibility, but they do not eliminate the customer's security responsibilities.
+4. Shared responsibility for specific areas
+Area	AWS responsibility	Customer responsibility
+Physical security	Secure data centers	—
+Hardware	Maintain physical servers	—
+EC2 operating system	Underlying infrastructure	Patch and secure guest OS
+IAM	Provide IAM capabilities	Configure users, roles and permissions
+Data	Protect underlying service infrastructure	Classify, control access to and appropriately protect data
+Encryption	Provide supported encryption capabilities	Configure and manage encryption choices and keys where required
+Network	Secure underlying AWS network	Configure VPCs, security groups and network access
+Compliance	Provide evidence of AWS infrastructure controls	Meet applicable compliance requirements for your workload
+The exact division varies by service. AWS also has responsibilities that apply to its managed services beyond physical security alone.
+
+5. Shared responsibility vs. shared controls
+These terms sound similar, but they are different.
+- Shared responsibility: Divides security obligations between AWS and the customer.
+- Shared controls: Security controls where AWS and the customer each have their own implementation responsibilities.
+AWS describes three control categories:
+Control type	Example
+Inherited controls	Physical data-center security managed by AWS
+Shared controls	Patch management: AWS patches its infrastructure, while customers patch guest operating systems where they are responsible
+Customer-specific controls	Customer-defined IAM policies and application security configurations
