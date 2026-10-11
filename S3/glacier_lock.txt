@@ -1,0 +1,99 @@
+AWS S3 Glacier and S3 Object Lock
+These are two important S3 topics for the AWS Cloud Practitioner (CLF-C02) exam. The key difference is:
+- S3 Glacier = low-cost storage for archival data.
+- S3 Object Lock = protection against deleting or overwriting objects during a retention period.
+1. Amazon S3 Glacier
+S3 Glacier is a family of S3 storage classes designed for low-cost data archiving. It is useful when data must be retained for a long time but is accessed infrequently.
+
+
+
+
+
+
+
+aws.amazon.com
+
+
+Glacier storage classes
+Instant
+S3 Glacier Instant Retrieval
+Retrieval: milliseconds
+For archive data that is rarely accessed but must be available immediately. Typical use: medical images or archived records that may need instant access.
+
+
+
+Flexible
+S3 Glacier Flexible Retrieval
+Retrieval: minutes to hours, depending on option
+For backups and archives where immediate retrieval is not always necessary.
+
+
+
+Deep
+S3 Glacier Deep Archive
+Retrieval: typically hours
+For long-term retention at very low storage cost. Typical use: legal records or regulatory archives retained for years.
+
+
+
+Glacier exam comparison
+Feature	Instant Retrieval	Flexible Retrieval	Deep Archive
+Access frequency	Rare	Rare	Very rare
+Retrieval speed	Milliseconds	Minutes to hours	Hours
+Storage cost	Low	Lower	Generally lowest
+Typical use	Rarely accessed but urgent data	Backups and archives	Long-term retention
+Retrieval times and costs depend on the class and retrieval option. Glacier classes also have minimum storage-duration charges, so early deletion or transition may incur additional costs.
+Memory trick: Instant = now; Flexible = wait a little; Deep Archive = wait longer, pay less.
+2. Amazon S3 Object Lock
+S3 Object Lock helps prevent objects from being deleted or overwritten for a specified period. It is designed for WORM (Write Once, Read Many) protection.
+Example: A company must retain financial records for seven years and prevent employees from deleting them prematurely.
+Upload financial report
+
+Apply Object Lock retention
+Example: 7 years
+
+Object protected during retention
+Cannot be deleted or overwritten in violation of the retention controls
+
+
+Object Lock requirements
+- Enable S3 Versioning on the bucket; Object Lock operates on object versions.
+- Object Lock can be configured with retention periods or legal holds.
+- It is useful for regulatory compliance, audit records, and immutable backups.
+- It does not automatically encrypt objects or prevent unauthorized reading.
+The three main Object Lock controls
+
+1. Governance mode
+Most users cannot delete or overwrite protected versions during retention. Users with the required special permissions can bypass governance retention.
+Use when controlled administrative exceptions are acceptable.
+
+
+
+
+2. Compliance mode
+Protected object versions cannot be deleted or have their retention shortened during the retention period, including by the AWS account root user.
+Use when strict, non-bypassable retention is required.
+
+
+
+
+3. Legal hold
+Protects an object version from deletion until the legal hold is removed. It does not have a fixed expiration date.
+Use when litigation or an investigation requires preservation of records.
+
+
+
+Governance vs. Compliance vs. Legal Hold
+Feature	Governance	Compliance	Legal hold
+Can authorized users bypass protection?	Yes, with required permissions	No, during the retention period	Can be removed by an authorized principal with permission
+Fixed retention period?	Yes	Yes	No
+Common use	Internal data protection	Strict regulatory retention	Litigation or investigation
+3. Glacier vs. Object Lock
+Question	Correct concept
+Store old backups at a lower cost	S3 Glacier storage class
+Retrieve archived data immediately	Glacier Instant Retrieval
+Keep data for years at the lowest archival storage cost	Glacier Deep Archive
+Prevent deletion during a fixed retention period	S3 Object Lock
+Meet strict WORM retention requirements	Object Lock in Compliance mode
+Preserve records during a legal case	Object Lock legal hold
+Automatically move old objects into archive storage	S3 Lifecycle policy

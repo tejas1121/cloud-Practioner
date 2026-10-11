@@ -1,0 +1,105 @@
+AWS Storage Gateway — CLF-C02 Exam Notes
+AWS Storage Gateway is a hybrid cloud storage service that connects your on-premises applications to AWS cloud storage. It allows applications to access cloud-backed storage using familiar protocols while AWS manages the underlying cloud storage.
+Simple example: A hospital has an on-premises server that expects files to be stored locally. Instead of replacing the application, it uses Storage Gateway to connect that server to AWS storage.
+
+
+
+
+
+
+
+aws.amazon.com
+
+
+1. The three main Storage Gateway types
+
+
+
+
+
+
+
+
+
+1. S3 File Gateway
+Files → S3
+- Presents cloud-backed file shares using NFS or SMB.
+- Stores files as objects in Amazon S3.
+- Maintains a local cache for frequently accessed data.
+- Useful for file shares, content repositories, and backups.
+
+
+
+
+
+
+
+
+
+
+
+
+2. Volume Gateway
+Block storage
+Provides iSCSI block storage volumes to on-premises applications.
+- Cached volumes: Primary data is stored in AWS, with frequently accessed data cached locally.
+- Stored volumes: Primary data is stored locally, with asynchronous backups to AWS.
+
+
+
+
+
+
+
+
+
+
+
+
+3. Tape Gateway
+Virtual tapes
+- Replaces physical tape infrastructure with virtual tape libraries (VTLs).
+- Integrates with existing backup software.
+- Stores virtual tapes in AWS and supports archival workflows using S3 Glacier storage classes.
+
+
+
+2. Understand each type with examples
+A. S3 File Gateway
+Suppose a company has an application that reads and writes files through an NFS or SMB share. It wants the files stored in Amazon S3 without rewriting the application.
+Flow:
+On-premises application
+
+S3 File Gateway
+NFS / SMB · Local cache
+
+Amazon S3
+Files stored as S3 objects
+
+
+Exam clue: “Access Amazon S3 objects through familiar file protocols such as NFS or SMB” → S3 File Gateway.
+B. Volume Gateway
+Volume Gateway presents block storage over iSCSI, which is useful for applications that expect disk volumes.
+Type	Where primary data lives	What AWS stores
+Cached volumes	Primarily in AWS	Full data, with frequently accessed data cached locally
+Stored volumes	Locally on-premises	Asynchronous backups/snapshots in AWS
+Memory trick:
+- Cached = cloud-first storage, local cache.
+- Stored = local-first storage, cloud backup.
+C. Tape Gateway
+Tape Gateway is designed for organizations that already use tape-based backup software.
+Instead of managing physical tapes, the backup software works with virtual tapes. AWS stores the data in cloud storage, including archival storage for long-term retention.
+Exam clue: “Company wants to move from physical tapes to cloud archival storage without changing its existing backup workflow” → Tape Gateway.
+3. Storage Gateway vs. Snow Family vs. DataSync
+Service	Main purpose
+AWS Storage Gateway	Ongoing hybrid storage between on-premises systems and AWS
+AWS Snow Family	Physical devices for large data transfers and edge computing
+AWS DataSync	Online data transfer and synchronization between supported storage locations
+Amazon S3	Object storage in AWS
+AWS Direct Connect	Dedicated network connection between an organization and AWS
+Exam scenarios
+- An organization needs ongoing on-premises file access backed by S3 → S3 File Gateway.
+- A legacy application requires iSCSI block volumes → Volume Gateway.
+- Existing backup software uses virtual tapes → Tape Gateway.
+- A company has petabytes of data and insufficient internet bandwidth → Snow Family.
+- A company wants to automate online transfers from its on-premises NAS to AWS → DataSync.

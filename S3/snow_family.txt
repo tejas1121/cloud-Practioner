@@ -1,0 +1,105 @@
+The AWS Snow Family is a collection of physical devices designed to move large amounts of data to and from AWS and, in some cases, perform computing at the edge when internet connectivity is limited.
+Examples: transferring terabytes of company data from an on-premises data center to Amazon S3, or processing data in a remote location with poor network connectivity.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+6
+
+
+
+
+
+
+
+
+1. The three main Snow Family solutions
+
+
+
+
+
+
+
+
+
+1. AWS Snowcone
+Small and portable
+- Smallest, portable device in the family.
+- Designed for smaller data transfers and edge computing.
+- Useful in vehicles, field sites, and remote locations.
+
+
+
+
+
+
+
+
+
+
+
+
+2. AWS Snowball Edge
+Large data transfers
+- Transfers large datasets into or out of AWS.
+- Supports edge computing capabilities on supported configurations.
+- Useful when network transfer would take too long or bandwidth is limited.
+
+
+
+
+
+
+
+
+
+
+
+
+3. AWS Snowmobile
+Exabyte-scale transfer
+- A truck-transported shipping-container solution for extremely large datasets.
+- Designed for data-center-scale migrations.
+- Historically associated with transfers of up to 100 PB per container.
+
+
+
+Exam note: Snowmobile is a historical product/solution and is not generally offered for new orders today. For a current real-world migration, verify availability with AWS. For exam questions about the traditional Snow Family lineup, recognize the Snowmobile name and its exabyte-scale use case.
+2. Snowball Edge: storage vs. computing
+Snowball Edge has supported different configurations for different workloads.
+Configuration concept	Best suited for
+Storage-optimized	Large data transfer and storage-heavy workloads
+Compute-optimized	Edge processing and compute-intensive workloads
+Exact device models and ordering options can change. For the exam, focus on the distinction between moving large amounts of data and processing data locally at the edge.
+3. Why use AWS Snow Family?
+- Limited bandwidth: Transferring data over the internet would take too long.
+- Remote locations: Devices can operate where reliable connectivity is unavailable.
+- Large-scale migration: Physically transport data to AWS rather than transferring everything online.
+- Edge computing: Process data close to where it is generated, then transfer results or data to AWS.
+Example: A media company has 80 TB of video footage at a remote location with slow internet. It can use a Snowball Edge device to transfer the data to AWS more efficiently than relying on the network alone.
+4. Snow Family vs. other AWS services
+Requirement	Best fit
+Transfer huge datasets when internet bandwidth is limited	Snowball Edge
+Small, portable edge data collection and processing	Snowcone
+Extremely large data-center migration in the traditional Snow lineup	Snowmobile
+Transfer data online over a private network connection	AWS Direct Connect
+Online file transfer to AWS storage	AWS DataSync
+Store objects after transfer	Amazon S3
+Exam trap: AWS Snow Family is not a storage class like S3 Glacier. Snow Family uses physical devices for data transfer and edge workloads; S3 storage classes determine how objects are stored in AWS.

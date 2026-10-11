@@ -1,0 +1,222 @@
+AWS S3: Storage Classes, Versioning, Replication & Access Logging
+These four S3 topics are important for the AWS Cloud Practitioner (CLF-C02) exam. Learn what each feature does, when to use it, and how AWS exam questions distinguish them.
+1. S3 Storage Classes
+S3 storage classes help you optimize storage costs based on how frequently data is accessed, how quickly it must be retrieved, and its resilience requirements.
+
+
+
+
+
+
+
+
+
+S3 Standard
+Frequent access
+For websites, application files, and frequently accessed data. Designed for 99.99% availability and 11 nines durability.
+
+
+
+
+
+
+
+
+
+
+
+
+S3 Intelligent-Tiering
+Unknown access pattern
+Automatically moves eligible objects between access tiers to reduce costs. Monitoring and automation charges apply.
+
+
+
+
+
+
+
+
+
+
+
+
+S3 Standard-IA
+For infrequently accessed data that must be retrieved quickly. Has retrieval charges and a minimum storage duration.
+
+
+
+
+
+
+
+
+
+
+
+
+S3 One Zone-IA
+For infrequently accessed, recreatable data where storage in a single Availability Zone is acceptable.
+
+
+
+
+
+
+
+
+
+
+
+
+S3 Glacier Instant Retrieval
+Archive data that is rarely accessed but still needs millisecond retrieval.
+
+
+
+
+
+
+
+
+
+
+
+
+S3 Glacier Flexible Retrieval
+Low-cost archive storage. Retrieval options range from minutes to hours.
+
+
+
+
+
+
+
+
+
+
+
+
+S3 Glacier Deep Archive
+Very low-cost, long-term archives. Retrieval typically takes hours.
+
+
+
+Exam memory trick
+Scenario	Best fit
+Frequently accessed application data	Standard
+Access pattern is unpredictable	Intelligent-Tiering
+Infrequent access, fast retrieval	Standard-IA
+Infrequent access, single AZ acceptable	One Zone-IA
+Archive with instant retrieval	Glacier Instant Retrieval
+Archive with minutes-to-hours retrieval	Glacier Flexible Retrieval
+Long-term archive at very low cost	Glacier Deep Archive
+Exam trap: S3 Standard-IA and Glacier Instant Retrieval both provide rapid access, but Glacier Instant Retrieval is designed for archive data. Retrieval charges and minimum storage durations can affect the cost.
+2. S3 Versioning
+Versioning preserves multiple versions of an object in the same bucket.
+How versioning works
+Upload report.pdf
+Version ID: v1
+
+Upload an updated file with the same key
+
+Current version
+v2
+
+The updated report is returned by default.
+
+Previous version
+v1
+
+The original report can still be recovered.
+
+
+Why use versioning?
+- Recover from accidental overwrites.
+- Recover deleted objects when older versions are retained.
+- Keep historical versions of files.
+- Support recovery from unintended changes.
+Important exam points
+- Versioning is configured at the bucket level.
+- After versioning is enabled, new versions receive unique version IDs.
+- A normal delete generally creates a delete marker rather than permanently deleting previous versions.
+- Permanently deleting a particular version requires specifying its version ID.
+- Versioning can increase storage costs because multiple versions are retained.
+Remember: Versioning is not replication. It keeps versions in the same bucket; replication copies objects to another bucket.
+3. S3 Replication
+Replication automatically and asynchronously copies objects from a source bucket to a destination bucket.
+There are two main types.
+
+
+
+
+
+
+
+
+
+Cross-Region Replication (CRR)
+Copies objects to a bucket in a different AWS Region.
+Use for geographic disaster recovery, compliance requirements, or keeping copies near users in another region.
+
+
+
+
+
+
+
+
+
+
+
+
+Same-Region Replication (SRR)
+Copies objects to another bucket in the same AWS Region.
+Use for separate data ownership, log aggregation, or maintaining copies for different teams.
+
+
+
+CRR vs. SRR
+Feature	CRR	SRR
+Destination	Different Region	Same Region
+Disaster recovery across Regions	Suitable	Not by itself
+Separate bucket copy	Yes	Yes
+Replication behavior	Asynchronous	Asynchronous
+Replication rules to remember
+1. Enable versioning on both source and destination buckets for standard live replication.
+2. Configure an IAM role that allows S3 to replicate objects.
+3. Replication is asynchronous; do not assume the destination is updated immediately.
+4. Existing objects are not automatically replicated merely by enabling a standard replication rule. Use S3 Batch Replication when you need to replicate existing objects.
+5. By default, delete markers are not replicated under standard replication rules unless configured appropriately; deletions of individual object versions are not replicated by default.
+Exam trap: If the question says “disaster recovery in another Region,” CRR is usually the intended answer. If it says “copy data to another bucket in the same Region,” SRR is the answer.
+4. S3 Access Logging
+S3 access logging records requests made to a bucket. It helps administrators understand how the bucket is being accessed and investigate potential security issues.
+Users and applications
+Make requests to an S3 bucket
+
+S3 Server Access Logging
+Records detailed request information
+
+Destination S3 bucket
+Stores access log files for analysis and auditing
+
+
+What can access logs help with?
+- Identifying which requests were made.
+- Investigating unexpected access patterns.
+- Troubleshooting access problems.
+- Supporting security analysis and auditing.
+Server Access Logging vs. CloudTrail
+Feature	S3 Server Access Logging	AWS CloudTrail
+Primary purpose	Detailed request-access logs for a bucket	Record AWS API activity
+Captures	Request details such as requester, operation, and response status	Management events and configurable S3 object-level data events
+Storage/delivery	Log files delivered to a destination bucket	Event history and configurable destinations, such as S3
+Exam use case	Analyze detailed bucket requests	Audit API activity and investigate who performed an action
+Important: CloudTrail management events do not automatically include every S3 object-level operation. To record object-level actions such as GetObject and PutObject, configure the relevant CloudTrail data events.
+Also, S3 Server Access Logging delivery is best-effort and may be delayed. Do not treat it as a real-time monitoring system.
+5. Final revision: four concepts compared
+Concept	Main purpose	Example
+Storage classes	Optimize storage cost and retrieval characteristics	Move old reports to Glacier
+Versioning	Preserve object history	Recover an overwritten file
+Replication	Copy objects to another bucket	Replicate data to another Region
+Access logging	Record bucket request activity	Investigate unexpected requests

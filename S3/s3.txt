@@ -1,0 +1,198 @@
+Amazon S3 (Simple Storage Service) is an object storage service used to store and retrieve data over the internet. It is highly scalable, durable, and commonly used for backups, static website hosting, data lakes, and application files.
+
+
+
+
+
+
+
+dev.to
+
+
+1. S3 fundamentals
+Term	Meaning
+Bucket	Container that stores objects
+Object	A file stored in S3, plus metadata
+Key	Object's unique name/path within a bucket
+Metadata	Information about an object, such as content type
+Version ID	Identifier for a particular version of an object
+Region	Region where the bucket is created
+Example:
+Bucket: college-projects
+    ├── reports/dbms.pdf
+    ├── images/logo.png
+    └── code/app.py
+
+
+Here, college-projects is the bucket, while reports/dbms.pdf is an object key. S3 is object storage, not a traditional file system; folder-like paths are generally prefixes in object keys.
+2. Important S3 characteristics
+- Scalability: Stores data from a few files to very large datasets.
+- Durability: S3 Standard is designed for 99.999999999% (11 nines) durability.
+- Availability: S3 Standard is designed for 99.99% availability.
+- Access control: IAM policies, bucket policies, and access points can control access.
+- Encryption: Supports encryption at rest and in transit.
+- Storage independence: Storage capacity can grow without provisioning disks.
+Exam trap: Durability and availability are different. Durability concerns the risk of losing data; availability concerns whether the service is accessible.
+3. S3 storage classes
+This is one of the most important CLF-C02 exam topics.
+
+
+
+
+
+
+
+
+
+S3 Standard
+Frequently accessed
+For websites, apps, and frequently accessed files. High availability and low-latency access.
+
+
+
+
+
+
+
+
+
+
+
+
+S3 Intelligent-Tiering
+Unknown access pattern
+Automatically moves eligible objects between access tiers to optimize costs. Monitoring and automation charges apply.
+
+
+
+
+
+
+
+
+
+
+
+
+S3 Standard-IA
+For data accessed infrequently but needed quickly when requested. Has retrieval charges and a minimum storage duration.
+
+
+
+
+
+
+
+
+
+
+
+
+S3 One Zone-IA
+Infrequently accessed data stored in one Availability Zone. Lower cost, but less resilient to the loss of that AZ.
+
+
+
+
+
+
+
+
+
+
+
+
+S3 Glacier Instant Retrieval
+Archive data that is rarely accessed but must be retrieved immediately.
+
+
+
+
+
+
+
+
+
+
+
+
+S3 Glacier Flexible Retrieval
+Low-cost archive storage with retrieval options ranging from minutes to hours.
+
+
+
+
+
+
+
+
+
+
+
+
+S3 Glacier Deep Archive
+Very low-cost, long-term archives such as records retained for years. Retrieval typically takes hours.
+
+
+
+Quick memory trick
+Requirement in the question	Choose
+Frequently accessed files	S3 Standard
+Access patterns are unpredictable	Intelligent-Tiering
+Infrequent access, rapid retrieval	Standard-IA
+Infrequent access, one AZ acceptable	One Zone-IA
+Archive but instant retrieval	Glacier Instant Retrieval
+Archive, retrieval can wait	Glacier Flexible Retrieval
+Lowest-cost long-term archive	Glacier Deep Archive
+4. S3 versioning
+Versioning keeps multiple versions of an object in the same bucket.
+Example: You upload report.pdf, then upload a changed report.pdf. With versioning enabled, S3 can retain both versions.
+Benefits:
+- Recover from accidental overwrites.
+- Recover deleted objects using prior versions.
+- Support recovery from some accidental changes.
+Important details:
+- Versioning is configured at the bucket level.
+- Deleting an object in a versioned bucket typically adds a delete marker rather than permanently removing older versions.
+- Permanently deleting a specific version requires specifying its version ID.
+- Suspending versioning does not remove versions already stored.
+Exam trap: Versioning is not the same as replication or backup. It helps recover earlier object versions, but does not independently protect against every account-level or regional disaster.
+5. S3 Lifecycle policies
+Lifecycle policies automatically transition objects to cheaper storage classes or expire them.
+Example policy:
+Day 0       → Upload report
+Day 30      → Transition to Standard-IA
+Day 90      → Transition to Glacier Flexible Retrieval
+After 7 years → Expire object
+
+
+Use lifecycle rules to manage storage costs without manually moving files.
+Remember:
+- Transition = change storage class.
+- Expiration = delete or expire objects according to the rule.
+- Minimum storage-duration charges and transition restrictions can apply.
+- Lifecycle rules can also manage noncurrent versions.
+6. S3 security
+Feature	Purpose
+IAM policy	Controls what an IAM identity can do
+Bucket policy	Resource-based policy attached to a bucket
+S3 Block Public Access	Blocks public access settings and policies
+ACLs	Legacy access-control mechanism; generally prefer policies
+SSE-S3	S3-managed encryption keys
+SSE-KMS	Encryption using AWS KMS keys
+SSE-C	Customer-provided encryption keys
+TLS/HTTPS	Protects data in transit
+Exam traps:
+- S3 buckets and objects are private by default unless permissions/configuration make them accessible otherwise.
+- S3 Block Public Access is a key safeguard against accidental public exposure.
+- Encryption at rest does not automatically mean data is encrypted in transit; HTTPS/TLS protects data in transit.
+- SSE-S3 is the straightforward default server-side encryption option for most new S3 uploads.
+7. Other S3 features to know
+- Static website hosting: Serves static HTML, CSS, JavaScript, and assets. Public access configuration or a CDN architecture may be needed.
+- Replication: Copies objects asynchronously to another bucket; Cross-Region Replication (CRR) and Same-Region Replication (SRR) are common configurations. Versioning must be enabled on source and destination buckets for standard live replication.
+- S3 Object Lock: Helps prevent objects from being deleted or overwritten for a retention period; supports compliance and governance retention modes.
+- S3 Transfer Acceleration: Can speed up long-distance transfers using AWS edge locations.
+- S3 Event Notifications: Can trigger workflows with services such as Lambda, SNS, and SQS.
+- Multipart upload: Uploads large objects in parts and can improve reliability for large transfers.
+- Presigned URLs: Provide time-limited access to specific objects without making the whole bucket public.
+- S3 Select: Lets applications retrieve subsets of data from supported objects using SQL expressions; know the concept if it appears in your course materials.
