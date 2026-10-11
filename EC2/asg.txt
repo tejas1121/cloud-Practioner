@@ -1,0 +1,139 @@
+An Auto Scaling Group (ASG) automatically increases or decreases the number of EC2 instances according to demand and configured scaling policies.
+The goal is to maintain application performance while avoiding unnecessary compute costs.
+Think of ASG as an automatic manager for your EC2 fleet: it launches more instances when capacity is needed and removes instances when demand falls.
+1. Why do we need an ASG?
+Suppose your NovaSRE dashboard normally handles 100 users, but during a demo, traffic increases to 2,000 users.
+Without Auto Scaling, your existing EC2 instances might become overloaded. With an ASG, AWS can launch more instances and later scale in when demand drops.
+Incoming application traffic
+
+Elastic Load Balancer
+Distributes traffic across registered healthy targets
+
+Auto Scaling Group
+Maintains the desired number of EC2 instances
+
+EC2 #1
+
+
+EC2 #2
+
+
+EC2 #3
+
+
+
+
+2. Minimum, Desired and Maximum capacity
+Every ASG has three important capacity settings.
+
+Minimum capacity
+The minimum number of instances the group should maintain under normal scaling behavior.
+
+
+
+
+Desired capacity
+The target number of instances the ASG attempts to maintain.
+
+
+
+
+Maximum capacity
+The upper limit on the number of instances the ASG can maintain.
+
+
+
+Example
+Suppose you configure:
+- Minimum = 2
+- Desired = 3
+- Maximum = 6
+The ASG aims to maintain 3 instances initially. If demand increases, it can scale out to 6. If demand falls, it can scale in, but normally not below 2.
+Exam memory trick: Min = floor, Desired = target, Max = ceiling.
+3. How does an ASG know when to scale?
+ASG scaling policies determine when to add or remove instances.
+
+
+
+
+
+
+
+
+
+A. Target tracking scaling
+Maintains a metric near a specified target.
+Example: Maintain average CPU utilization around 50%.
+Exam clue: Keep a metric close to a target value.
+
+
+
+
+
+
+
+
+
+
+
+
+B. Step scaling
+Adjusts capacity by different amounts based on CloudWatch alarm thresholds and the severity of the metric breach.
+Example: Add 2 instances if CPU is very high, but add only 1 if CPU is moderately high.
+
+
+
+
+
+
+
+
+
+
+
+
+C. Scheduled scaling
+Changes capacity at specified times.
+Example: Increase the desired capacity before a predictable weekday traffic peak.
+
+
+
+
+
+
+
+
+
+
+
+
+D. Simple scaling
+Scales based on a CloudWatch alarm, with a cooldown period used to help avoid reacting too quickly to successive alarms.
+For many modern use cases, target tracking or step scaling is preferred.
+
+
+
+4. What happens if an EC2 instance fails?
+An ASG can help recover from instance failures.
+1. The ASG monitors the health of instances using EC2 status checks and, if configured, Elastic Load Balancing health checks.
+2. An instance is identified as unhealthy.
+3. The ASG can terminate and replace it.
+4. The group attempts to return to its desired capacity, subject to available capacity and applicable configuration.
+This is called automatic instance replacement.
+Remember: ASG health checks help replace failed instances; ELB health checks help avoid routing normal traffic to unhealthy targets.
+5. Launch templates and Auto Scaling
+An ASG needs instructions for launching instances. These are typically supplied through a launch template, which can specify:
+- AMI
+- Instance type
+- Security groups and networking settings
+- IAM instance profile
+- Storage configuration
+- User data
+The ASG also specifies the minimum, desired, and maximum capacity, along with scaling policies and placement settings.
+Exam trap: A launch template defines how to launch an instance; an ASG manages the number and lifecycle of instances.
+6. ASG + ELB together
+Elastic Load Balancing	Auto Scaling Group
+Distributes incoming traffic	Adds and removes instances
+Uses health checks to identify unhealthy targets	Can replace unhealthy instances
+Improves traffic distribution	Adjusts application capacity
+They work together to support scalable, highly available applications. Deploying instances across multiple AZs can also improve resilience to AZ failures.

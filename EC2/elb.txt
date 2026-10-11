@@ -1,0 +1,132 @@
+AWS Elastic Load Balancing (ELB) — CLF-C02
+Amazon Elastic Load Balancing automatically distributes incoming application traffic across multiple targets, such as EC2 instances, containers, and IP addresses, across one or more Availability Zones.
+Simple definition: ELB acts as a traffic manager that distributes requests to the appropriate servers so that no single server has to handle all the traffic.
+1. Why do we need a Load Balancer?
+Imagine your NovaSRE dashboard runs on one EC2 instance. If 5,000 users access it simultaneously, the server may become overloaded. If that instance fails, the application may become unavailable.
+A load balancer helps distribute incoming requests across multiple healthy instances.
+Users
+Requests arrive from clients
+
+Elastic Load Balancer
+Routes requests to healthy targets
+
+EC2 A
+Healthy
+
+
+EC2 B
+Healthy
+
+
+EC2 C
+Unhealthy
+
+
+
+Traffic can be routed to healthy targets; an unhealthy target is excluded from normal routing when health-check behavior identifies it as unhealthy.
+
+Benefits of ELB
+- High availability: Distributes requests across multiple targets and AZs.
+- Fault detection: Health checks help identify unhealthy targets.
+- Scalability: Works with Auto Scaling to accommodate changing traffic.
+- Single entry point: Clients can use the load balancer's DNS name rather than tracking individual EC2 addresses.
+- TLS termination: Supported load balancers can handle HTTPS/TLS connections.
+
+2. Types of AWS Load Balancers
+For CLF-C02, know the four main types and what each one is designed to handle.
+
+
+
+
+
+
+
+
+
+1. Application Load Balancer (ALB)
+Layer 7 — Application
+Handles HTTP and HTTPS traffic. It can route requests based on hostnames, URL paths, HTTP headers, and other application-level information.
+Example: Route /api/* to a backend service and /images/* to a separate service.
+Remember: ALB = HTTP/HTTPS + content-based routing.
+
+
+
+
+
+
+
+
+
+
+
+
+2. Network Load Balancer (NLB)
+Layer 4 — Transport
+Handles TCP, UDP and TLS traffic at the transport level, with very high performance and low latency.
+Example: Distribute TCP connections to a high-throughput application.
+Remember: NLB = Layer 4 + high performance.
+
+
+
+
+
+
+
+
+
+
+
+
+3. Gateway Load Balancer (GWLB)
+Layer 3 — Network
+Deploys, scales, and distributes traffic through virtual network appliances such as firewalls and intrusion detection systems.
+Example: Inspect network traffic using a fleet of virtual security appliances.
+Remember: GWLB = transparent traffic steering to network appliances.
+
+
+
+
+
+
+
+
+
+
+
+
+4. Classic Load Balancer (CLB)
+Legacy load balancer supporting basic Layer 4 and Layer 7 load-balancing functionality.
+Example: Older EC2 applications built using the previous generation of load balancing.
+Remember: CLB = legacy; prefer ALB or NLB for most new designs.
+
+
+
+3. ALB vs. NLB vs. GWLB vs. CLB
+Feature	ALB	NLB	GWLB	CLB
+OSI layer	Layer 7	Layer 4	Layer 3 (using GENEVE encapsulation)	Layer 4 and Layer 7
+Main traffic	HTTP/HTTPS	TCP/UDP/TLS	Network appliance traffic	Basic TCP/SSL and HTTP/HTTPS
+Content-based routing	Yes	No HTTP path-based routing	No	Limited
+Primary use	Web applications and APIs	High-performance network traffic	Firewalls and inspection appliances	Legacy applications
+Exam shortcut:
+- URL path or hostname routing → ALB.
+- High-performance TCP/UDP traffic → NLB.
+- Security appliances and traffic inspection → GWLB.
+- Older, legacy load balancing → CLB.
+4. Health checks
+A load balancer can check whether registered targets are healthy.
+For example, an ALB might send an HTTP request to /health on each application server. If a target repeatedly fails the configured health checks, the load balancer can stop routing normal traffic to it until it becomes healthy again.
+Remember that health checks are configurable, and the exact behavior depends on the load balancer type and target group configuration.
+5. ELB + Auto Scaling
+ELB and EC2 Auto Scaling solve related but different problems.
+Elastic Load Balancing
+Distributes requests among registered healthy targets.
+
+
+
+EC2 Auto Scaling
+Adds or removes instances based on configured scaling policies and capacity limits.
+
+
+
+Example: Traffic increases, Auto Scaling adds more EC2 instances, and the load balancer routes traffic to the registered healthy instances.
+Exam trap: A load balancer does not automatically mean your application will scale out. Auto Scaling manages instance capacity.

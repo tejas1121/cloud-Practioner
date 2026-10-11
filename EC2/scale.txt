@@ -1,0 +1,146 @@
+AWS Scalability and High Availability — CLF-C02
+In AWS, scalability means adjusting resources to handle changes in workload, while high availability means keeping an application accessible even when some components fail.
+These concepts are important for understanding EC2, load balancing, Auto Scaling, and AWS architecture questions in Stéphane Maarek's course.
+1. Scalability
+Imagine your NovaSRE dashboard normally receives 100 requests per minute, but during a demonstration it receives 1,000 requests per minute.
+Your infrastructure must handle the increased traffic without becoming overloaded. That's where scalability comes in.
+AWS supports two main types of scaling.
+
+
+
+
+
+
+
+
+
+A. Vertical Scaling — Scale Up / Down
+Increase or decrease the capacity of an individual server.
+Example: Change an EC2 instance from t3.small to a larger instance type with more CPU and memory.
+- Simpler architecture.
+- Limited by the available capacity of the instance types.
+- Often requires a stop and start to change the instance type, depending on the instance and configuration.
+
+
+
+
+
+
+
+
+
+
+
+
+B. Horizontal Scaling — Scale Out / In
+Add or remove instances to handle changes in demand.
+Example: Increase the number of EC2 instances from 2 to 6 when traffic rises.
+- Handles larger workloads by distributing requests.
+- Works well with load balancing and Auto Scaling.
+- Requires the application to support multiple instances correctly.
+
+
+
+Vertical vs. horizontal scaling
+Feature	Vertical scaling	Horizontal scaling
+How it works	Changes the capacity of one machine	Adds or removes machines
+Example	Small EC2 → larger EC2	2 EC2 instances → 6
+Main limitation	Maximum size of one machine	Application and architecture complexity
+Common AWS approach	Change EC2 instance type	Auto Scaling group + load balancer
+Exam memory trick: Vertical = bigger server; horizontal = more servers.
+2. Elasticity
+Elasticity means automatically or dynamically matching resource capacity to current demand, increasing capacity when needed and reducing it when demand falls.
+For example:
+- Normal traffic: 2 EC2 instances.
+- Peak traffic: scale out to 8 instances.
+- Traffic drops: scale back in to 2 instances.
+This can help balance performance and cost.
+Difference to remember:
+- Scalability: The ability to handle growth by increasing capacity.
+- Elasticity: The ability to adjust capacity as demand changes, including scaling back down.
+3. High Availability (HA)
+High availability means designing a system to remain accessible even when individual components fail.
+In AWS, a common approach is to distribute application instances across multiple Availability Zones (AZs) within a Region.
+Application users
+
+Elastic Load Balancer
+Distributes requests to healthy targets
+
+Availability Zone A
+EC2 instance
+Healthy
+
+
+Availability Zone B
+EC2 instance
+Healthy
+
+
+
+If one AZ experiences a failure, the load balancer can direct traffic to healthy targets in the other AZ, provided sufficient capacity remains.
+
+Key high-availability principles
+- Deploy redundant application instances across multiple AZs.
+- Use load balancer health checks to route traffic to healthy targets.
+- Avoid a single point of failure in critical components.
+- Ensure databases and storage are also configured for the required availability.
+- Test recovery procedures instead of assuming redundancy alone guarantees availability.
+Exam trap: Multiple EC2 instances in the same AZ improve redundancy against an individual instance failure, but do not protect against an outage affecting that AZ.
+4. Fault Tolerance vs. High Availability
+These concepts are related but not identical.
+Concept	Meaning	Example
+High availability	Minimize downtime and restore service quickly	Load balancer sends requests to healthy instances in another AZ
+Fault tolerance	Continue operating with little or no interruption despite a component failure	A system designed with redundant components that continue operating immediately
+Disaster recovery	Restore service after a major disruption	Recover an application in another Region
+High availability often tolerates some brief interruption during failure detection or recovery. Fault tolerance aims for continued operation with minimal or no disruption, usually at greater cost and complexity.
+5. AWS services to recognize
+
+
+
+
+
+
+
+
+
+Elastic Load Balancing (ELB)
+Distributes incoming traffic across targets and supports health checks. It helps avoid sending traffic to unhealthy targets.
+
+
+
+
+
+
+
+
+
+
+
+
+Amazon EC2 Auto Scaling
+Automatically adjusts the number of EC2 instances according to scaling policies and configured capacity limits.
+
+
+
+
+
+
+
+
+
+
+
+
+AWS Regions and Availability Zones
+Regions are separate geographic areas. Each Region contains multiple AZs, which are designed as separate failure domains.
+
+
+
+6. Exam scenarios
+Scenario	Best concept
+Upgrade one server to a larger size	Vertical scaling
+Add more EC2 instances during peak demand	Horizontal scaling
+Automatically remove extra instances when demand falls	Elasticity / scale in
+Continue serving requests after one AZ fails	High availability across AZs
+Keep operating with little or no interruption after a component failure	Fault tolerance
+Recover from a Region-wide disaster	Disaster recovery
