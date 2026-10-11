@@ -1,0 +1,217 @@
+AWS Databases, Analytics & Migration Services — CLF-C02
+These services are easy to confuse because several of them analyze data, query data, or move data. The best exam strategy is to remember the main purpose of each service and the keyword that identifies it in a scenario.
+1. Analytics services
+
+
+
+
+
+
+
+
+
+1. Amazon Redshift
+Data warehouse
+A cloud data warehouse for running analytical SQL queries over large datasets.
+Example: Analyze years of sales data across millions of transactions.
+
+
+
+
+
+
+
+
+
+
+
+
+2. Amazon EMR
+Big data processing
+Managed platform for big-data frameworks such as Apache Spark and Hadoop.
+Example: Process terabytes of application logs using Spark.
+
+
+
+
+
+
+
+
+
+
+
+
+3. Amazon Athena
+Serverless SQL queries
+Query data stored in Amazon S3 using SQL without managing database infrastructure.
+Example: Run SQL queries against CSV, JSON, or Parquet files in S3.
+
+
+
+
+
+
+
+
+
+
+
+
+4. Amazon QuickSight
+Business intelligence
+Creates interactive dashboards, visualizations, and reports.
+Example: Build a dashboard showing revenue, sales trends, and business KPIs.
+
+
+
+The difference you must know
+Service	Main question it answers
+Redshift	Where should we run large-scale analytical SQL workloads?
+EMR	How do we process massive datasets using big-data frameworks?
+Athena	How do we query files in S3 using SQL without managing servers?
+QuickSight	How do we visualize data and build dashboards?
+Memory trick: Redshift = warehouse, EMR = processing, Athena = query, QuickSight = visualize.
+2. Specialized database services
+
+
+
+
+
+
+
+
+
+5. Amazon DocumentDB
+Document database
+A managed document database with MongoDB compatibility.
+Example: Store flexible JSON-like product catalog records or application documents.
+
+
+
+
+
+
+
+
+
+
+
+
+6. Amazon Neptune
+Graph database
+Stores and queries connected data using nodes and relationships (edges).
+Example: Social networks, fraud detection, and recommendation relationships.
+
+
+
+
+
+
+
+
+
+
+
+
+7. Amazon QLDB
+Historical service
+A ledger database designed to maintain a cryptographically verifiable, immutable history of data changes.
+Historical example: Track the complete history of financial or supply-chain transactions.
+
+
+
+Important current-status note: Amazon QLDB reached end of support on July 31, 2025. It is therefore a historical exam concept rather than a service to select for a new production design today. Its defining concept remains a verifiable, immutable transaction history.
+3. Blockchain service
+
+
+
+
+
+
+
+
+
+8. Amazon Managed Blockchain
+A managed service for creating and managing blockchain networks and interacting with supported blockchain networks.
+- Blockchain = distributed, tamper-evident ledger.
+- Useful when multiple parties need to share and verify records.
+- Reduces the operational burden of setting up blockchain infrastructure.
+Example: Multiple supply-chain companies share records of product ownership and movement.
+
+
+Exam distinction: Amazon QLDB was a centrally controlled ledger database; Managed Blockchain is for blockchain networks shared among participants. QLDB is no longer supported. 
+
+Amazon Quantum Ledger Database (Amazon QLDB)
++1
+
+
+
+4. Database migration
+
+
+
+
+
+
+
+
+
+9. AWS Database Migration Service (AWS DMS)
+Helps migrate databases to AWS, between supported database engines, or to other supported destinations. It can also replicate ongoing changes during a migration.
+- Supports homogeneous and heterogeneous migrations.
+- Helps minimize downtime when configured for ongoing replication.
+- Works with supported source and target databases.
+Example: Migrate an on-premises database to Amazon RDS while keeping changes synchronized.
+
+
+Exam trap: DMS primarily moves and replicates database data. If you need to convert a database schema or stored procedures between different engines, AWS Schema Conversion Tool (AWS SCT) has historically been used for that purpose; check the current migration workflow and tooling for your specific source and target.
+5. Data integration and ETL
+
+
+
+
+
+
+
+
+
+10. AWS Glue
+A serverless data integration service used to discover, prepare, transform, and move data for analytics.
+- ETL: Extract, Transform, Load.
+- Data Catalog: Stores metadata about data sources and tables.
+- Crawlers: Discover data and infer its schema.
+- Jobs: Run data transformation workflows.
+Example: Discover CSV files in S3, infer their schema, transform the data, and prepare it for analytics with Athena.
+
+
+How Glue, Athena, and Redshift work together
+Amazon S3
+Raw data files
+
+AWS Glue
+Discover schema and transform data
+
+Athena
+Query data using SQL
+
+
+Redshift
+Analyze warehouse data
+
+
+
+Glue can catalog and transform data used by analytics services; the exact flow depends on the architecture.
+
+6. All 10 services — exam revision table
+AWS service	Remember this keyword
+Amazon Redshift	Data warehouse
+Amazon EMR	Big-data processing with Spark/Hadoop
+Amazon Athena	Serverless SQL queries on S3
+Amazon QuickSight	BI dashboards and visualization
+Amazon DocumentDB	MongoDB-compatible document database
+Amazon Neptune	Graph database
+Amazon QLDB	Cryptographically verifiable ledger history — discontinued
+Amazon Managed Blockchain	Managed blockchain networks
+AWS DMS	Database migration and replication
+AWS Glue	Serverless ETL and data catalog

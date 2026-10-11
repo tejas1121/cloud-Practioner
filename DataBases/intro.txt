@@ -1,0 +1,149 @@
+For the AWS Cloud Practitioner exam, you need to identify which AWS database service fits a particular workload, why it is used, and how it differs from other database services.
+The most important services to learn first are Amazon RDS, Aurora, DynamoDB, ElastiCache, Redshift, and Amazon Neptune.
+1. AWS database service map
+
+Relational databases — SQL
+Amazon RDS · Amazon Aurora
+Structured tables with rows, columns, relationships, and SQL queries.
+
+
+
+
+NoSQL database
+Amazon DynamoDB
+Managed key-value and document database designed for high-scale, low-latency applications.
+
+
+
+
+In-memory database
+Amazon ElastiCache · Amazon MemoryDB
+Fast data access for caching, sessions, and other low-latency use cases.
+
+
+
+
+Data warehouse and analytics
+Amazon Redshift
+Analytical queries across large datasets for business intelligence.
+
+
+
+
+Specialized databases
+Amazon Neptune · Amazon DocumentDB · Amazon Keyspaces
+Graph relationships, MongoDB-compatible document workloads, and Cassandra-compatible wide-column workloads.
+
+
+
+2. Amazon RDS — Relational Database Service
+
+
+
+
+
+
+
+docs.aws.amazon.com
+
+
+Amazon RDS is a managed relational database service. AWS manages many routine administrative tasks, such as infrastructure provisioning, backups, patching, and recovery options.
+Supported database engines include:
+- MySQL
+- PostgreSQL
+- MariaDB
+- Oracle
+- Microsoft SQL Server
+- Amazon Aurora (AWS-built relational database engine)
+Important RDS features
+- Automated backups and point-in-time recovery.
+- Multi-AZ deployments for high availability.
+- Read replicas to scale read-heavy workloads.
+- Managed maintenance and monitoring.
+Multi-AZ vs. Read Replicas
+Feature	Multi-AZ	Read Replica
+Main purpose	High availability and failover	Read scalability
+Replication	Synchronous in common Multi-AZ configurations	Asynchronous in standard RDS read-replica configurations
+Handles primary failure	Provides failover capability	Not automatically a substitute for Multi-AZ
+Read traffic scaling	Not its primary purpose	Yes
+Exam trap: If the question asks for high availability and automatic failover, think Multi-AZ. If it asks to reduce the read load on the primary database, think Read Replicas.
+3. Amazon Aurora
+Aurora is an AWS-built relational database compatible with MySQL and PostgreSQL.
+Key features:
+- Managed relational database.
+- Distributed storage designed for durability and availability.
+- Supports read scaling through Aurora Replicas.
+- Integrates with RDS management capabilities.
+RDS vs. Aurora: RDS supports several database engines, while Aurora is an AWS-built engine compatible with MySQL and PostgreSQL.
+Exam clue: “A company wants a cloud-optimized relational database compatible with MySQL or PostgreSQL” → Amazon Aurora may be the intended answer.
+4. Amazon DynamoDB
+
+
+
+
+
+
+
+speakerdeck.com
+
+
+DynamoDB is a fully managed NoSQL key-value and document database designed for high-scale applications with low-latency access.
+Typical uses:
+- Shopping carts
+- Gaming leaderboards
+- User sessions
+- IoT application data
+- Serverless applications
+Important concepts:
+- Partition key: Determines how data is distributed across partitions.
+- Sort key: Optional key that helps organize and query related items.
+- On-demand capacity: Automatically accommodates changing workloads without requiring capacity planning in advance.
+- Provisioned capacity: You specify read and write capacity, with optional auto scaling.
+- DynamoDB Accelerator (DAX): In-memory cache designed for DynamoDB workloads.
+Exam trap: DynamoDB is NoSQL, not a relational SQL database. Choose it when the question emphasizes key-value/document data, serverless architecture, and high-scale low-latency access.
+5. Amazon ElastiCache and MemoryDB
+Both are in-memory database services, but their roles differ.
+Service	Main purpose
+Amazon ElastiCache	Managed in-memory caching to reduce database load and improve response times
+Amazon MemoryDB	Durable, in-memory database for applications requiring very low latency and data durability
+Example: An online store repeatedly queries product details from RDS. Using ElastiCache, the application can cache frequently requested data and reduce repeated database queries.
+Exam clue: “Reduce database load and accelerate repeated reads” → Amazon ElastiCache.
+6. Amazon Redshift
+Redshift is a managed cloud data warehouse designed for analytics and large-scale SQL queries.
+Typical uses:
+- Business intelligence dashboards.
+- Sales and revenue analysis.
+- Aggregating data from multiple sources.
+- Analytical reporting over large datasets.
+RDS vs. Redshift
+- RDS → transactional applications, such as processing orders.
+- Redshift → analytical workloads, such as calculating annual sales trends across millions of records.
+Memory trick: RDS runs the application database; Redshift analyzes the business data.
+7. Specialized AWS databases
+Service	Database type	Common use
+Amazon Neptune	Graph	Social networks, relationship mapping, fraud connections
+Amazon DocumentDB	Document	MongoDB-compatible document workloads
+Amazon Keyspaces	Wide-column	Apache Cassandra-compatible applications
+Amazon Timestream	Time series	Time-stamped IoT and operational data
+Amazon OpenSearch Service	Search and analytics	Log search, text search, and observability analytics
+For the exam, prioritize matching each service to its use case rather than memorizing implementation details.
+8. Database migration and transfer
+A few additional services can appear in database-related questions.
+- AWS Database Migration Service (AWS DMS): Migrates databases to AWS or between supported database platforms. It can support ongoing replication during migration.
+- AWS Schema Conversion Tool (AWS SCT): Helps convert database schemas and code when moving between different database engines. For heterogeneous migrations, schema conversion may be required.
+Example: Migrating a supported on-premises database to Amazon RDS → consider AWS DMS.
+9. Final exam comparison table
+If the question says…	Think of…
+Managed relational database	Amazon RDS
+High availability and database failover	RDS Multi-AZ
+Scale relational database reads	Read Replicas
+AWS-built MySQL/PostgreSQL-compatible database	Amazon Aurora
+Serverless NoSQL key-value/document database	DynamoDB
+Cache frequently accessed database results	ElastiCache
+Durable, very-low-latency in-memory database	MemoryDB
+Data warehouse and BI analytics	Redshift
+Graph relationships	Neptune
+MongoDB-compatible document database	DocumentDB
+Cassandra-compatible wide-column database	Keyspaces
+Time-series data	Timestream
+Database migration	AWS DMS

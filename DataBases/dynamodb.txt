@@ -1,0 +1,131 @@
+Amazon DynamoDB is a fully managed, serverless NoSQL database provided by AWS. It supports key-value and document data models and is designed for low-latency performance at scale.
+Example: An online shopping application uses DynamoDB to store shopping carts, user preferences, and session information without managing database servers.
+
+
+
+
+
+
+
+speakerdeck.com
+
+
+1. How DynamoDB works
+DynamoDB organizes data into tables, items, and attributes.
+Table: Students
+A collection of items
+
+Item 1
+StudentID (partition key)
+101
+
+Name
+Tejas
+
+Course
+CSE
+
+
+Item 2
+StudentID (partition key)
+102
+
+Name
+Rahul
+
+Course
+IT
+
+
+
+Term	Meaning
+Table	Collection of data
+Item	Individual record
+Attribute	Field or property of an item
+Partition key	Key used to distribute and identify items
+Sort key	Optional key used to order items sharing a partition-key value
+Unlike a traditional relational database, DynamoDB does not require every item in a table to have exactly the same set of attributes.
+2. Key concepts
+Partition key
+The partition key determines how DynamoDB distributes data across its underlying partitions.
+Example: CustomerID
+CustomerID = C101 → Customer record
+CustomerID = C102 → Customer record
+CustomerID = C103 → Customer record
+
+
+A well-designed partition key helps distribute workload efficiently.
+Composite primary key
+A table can use a partition key alone or a partition key + sort key.
+Example: An orders table might use:
+- Partition key: CustomerID
+- Sort key: OrderDate
+This lets the application retrieve orders belonging to a particular customer and query them by sort-key conditions.
+Exam trap: A sort key is optional. DynamoDB does not require every table to have one.
+3. DynamoDB capacity modes
+DynamoDB provides two main capacity modes.
+Feature	On-demand	Provisioned
+Capacity planning	No manual capacity specification required	Specify read/write capacity
+Scaling	Automatically accommodates workload changes	Can use auto scaling
+Best fit	Unpredictable or variable workloads	Predictable workloads
+Cost model	Pay for requests based on usage	Pay for provisioned capacity, subject to billing rules
+Exam scenarios:
+- Traffic is unpredictable, and the company wants to avoid capacity planning → On-demand.
+- Traffic is predictable and the company wants to manage capacity → Provisioned capacity.
+4. DynamoDB consistency
+DynamoDB supports two read consistency options for supported read operations.
+- Eventually consistent reads: May not immediately reflect a recently completed write; generally use fewer read capacity units than strongly consistent reads.
+- Strongly consistent reads: Return the most up-to-date value reflecting successful prior writes, subject to DynamoDB's documented consistency guarantees.
+Strongly consistent reads are not supported on DynamoDB global secondary indexes (GSIs). Global tables also have their own replication and consistency behavior.
+Exam trap: Eventual consistency does not mean data is permanently inconsistent. It means recent updates may take time to become visible to a read.
+5. Important DynamoDB features
+
+DynamoDB Accelerator (DAX)
+An in-memory cache designed specifically for DynamoDB workloads to reduce read latency.
+
+
+
+
+Global tables
+Replicate tables across AWS Regions for multi-Region applications and disaster recovery.
+
+
+
+
+Point-in-time recovery (PITR)
+Helps restore a table to a selected point within the configured recovery window.
+
+
+
+
+Security
+Supports IAM access control and encryption at rest. Access can be restricted through IAM policies.
+
+
+
+Other useful terms:
+- TTL (Time to Live): Automatically expires eligible items after their configured expiration time; deletion is asynchronous.
+- Streams: Capture item-level changes for event-driven applications.
+- Backups: Supports on-demand backups and point-in-time recovery.
+- Indexes: GSIs and LSIs support additional query patterns.
+6. DynamoDB vs. RDS vs. ElastiCache
+Feature	DynamoDB	RDS	ElastiCache
+Database type	NoSQL	Relational SQL	In-memory data store/cache
+Data model	Key-value/document	Tables with relationships	Key-value and rich data structures
+Server management	Fully managed/serverless	Managed database instances or supported serverless options	Managed in-memory clusters/serverless options
+Main use	Scalable application data	Transactional relational data	Reduce latency and database load
+Memory trick:
+- RDS = relational SQL.
+- DynamoDB = NoSQL at scale.
+- ElastiCache = in-memory caching.
+- DAX = cache specifically for DynamoDB.
+7. Exam scenarios
+Scenario	Best answer
+Serverless application needs a scalable NoSQL database	DynamoDB
+Shopping cart data with low-latency access	DynamoDB
+Unpredictable workload with no capacity planning	DynamoDB on-demand mode
+Predictable workload with defined read/write capacity	DynamoDB provisioned mode
+Cache DynamoDB reads	DAX
+Replicate a DynamoDB table across Regions	Global tables
+Restore a table to an earlier point in time	Point-in-time recovery
+Store relational data and run SQL joins	RDS

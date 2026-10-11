@@ -1,0 +1,100 @@
+Amazon RDS — AWS Cloud Practitioner (CLF-C02)
+Amazon RDS stands for Amazon Relational Database Service. It is a managed AWS service that makes it easier to set up, operate, scale, back up, and recover relational databases in the cloud.
+Example: An e-commerce application stores customers, products, orders, and payments in an RDS database instead of installing and managing a database server manually on an EC2 instance.
+
+
+
+
+
+
+
+stormit.cloud
+
+
+1. What does AWS manage?
+With Amazon RDS, AWS manages much of the database infrastructure and routine administration.
+AWS manages	You generally manage
+Underlying infrastructure	Database schema and application queries
+Automated backup infrastructure	Backup retention and recovery requirements
+Supported database engine maintenance options	Database users and permissions
+Managed deployment and recovery capabilities	Instance sizing and configuration choices
+Infrastructure monitoring capabilities	Application-level database design
+Exam point: RDS reduces operational work, but it does not eliminate all database administration.
+2. Supported database engines
+Amazon RDS supports several relational database engines:
+Engine	Common association
+MySQL	Open-source relational database
+PostgreSQL	Open-source relational database
+MariaDB	MySQL-compatible relational database
+Oracle Database	Commercial relational database
+Microsoft SQL Server	Microsoft relational database
+Amazon Aurora	AWS-built, MySQL- and PostgreSQL-compatible relational database
+Exam trap: Amazon DynamoDB is not an RDS engine. DynamoDB is a separate NoSQL database service.
+3. RDS Multi-AZ vs. Read Replicas
+This is one of the most important RDS exam topics.
+Multi-AZ deployment
+Primary database
+Handles normal read/write traffic
+
+Standby in another Availability Zone
+Supports failover for high availability
+
+Classic Multi-AZ DB instance deployments use synchronous replication to a standby. The standby is not normally used to serve read traffic.
+
+Read Replica
+Primary database
+Handles writes and normal traffic
+
+Read Replica
+Serves additional read queries
+
+Standard RDS read replicas use asynchronous replication. They can be deployed in the same or a different Region, depending on engine and configuration.
+
+Feature	Multi-AZ DB instance	Read Replica
+Primary goal	High availability	Read scalability
+Typical replication	Synchronous to standby	Asynchronous
+Automatic failover	Yes, to standby	Not automatically the primary purpose
+Read scaling	Standby not normally readable	Yes
+Typical scenario	Recover from an AZ or DB instance failure	Reduce read load on primary
+Memory trick:
+- Multi-AZ = availability
+- Read Replica = read scaling
+A Read Replica may sometimes be promoted to a standalone database, but don't confuse that with the automatic failover behavior of a Multi-AZ deployment.
+4. RDS backups and recovery
+RDS offers managed backup capabilities.
+Automated backups
+- Support point-in-time recovery within the configured retention period.
+- Include database backups and transaction logs, as applicable to the engine.
+- Have a configurable retention period; the default is generally 7 days, and the supported range depends on the deployment and engine.
+Manual DB snapshots
+- Created by a user when needed.
+- Persist until you delete them.
+- Useful before a major upgrade or before making a significant database change.
+Exam distinction
+Requirement	Best fit
+Restore a database to a specific point within the retention window	Automated backups
+Keep a backup for as long as needed	Manual DB snapshot
+Recover automatically after a supported primary failure	Multi-AZ failover
+Scale read traffic	Read Replica
+5. RDS security
+RDS supports multiple security mechanisms.
+- VPC and security groups: Control network connectivity to the database.
+- IAM: Controls AWS API access and can support database authentication for supported engines.
+- Encryption at rest: Uses AWS KMS for supported RDS encryption configurations.
+- Encryption in transit: TLS protects database connections when configured and enforced.
+- Database authentication: Database usernames/passwords or supported alternative authentication mechanisms.
+Exam scenario: A database should accept connections only from an application server. Configure a database security group to allow the required database port from the application's security group, rather than opening the database to the internet.
+6. RDS scaling and availability
+- Vertical scaling: Change the DB instance class for more CPU, memory, or networking capacity.
+- Storage scaling: Increase storage where supported by the selected configuration.
+- Read scaling: Add Read Replicas.
+- High availability: Use Multi-AZ deployment.
+- Global or cross-Region recovery: Consider supported cross-Region backup, snapshot-copy, replication, or disaster-recovery options based on requirements.
+RDS is not serverless by default, although some configurations and related services offer serverless options.
+7. Amazon RDS vs. Amazon Aurora
+Feature	Amazon RDS	Amazon Aurora
+What it is	Managed relational database service supporting multiple engines	AWS-built relational database engine
+Engine choice	MySQL, PostgreSQL, MariaDB, Oracle, SQL Server, Aurora	MySQL- and PostgreSQL-compatible
+High availability	Multi-AZ options	Distributed storage and Aurora-specific high-availability architecture
+Read scaling	Read Replicas	Aurora Replicas
+Best exam clue	Managed relational da

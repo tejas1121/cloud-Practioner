@@ -1,0 +1,67 @@
+Amazon ElastiCache is a managed in-memory caching service that improves application performance by storing frequently accessed data in memory, allowing it to be retrieved faster than repeatedly querying a database.
+Simple example: Your e-commerce application frequently fetches product details from Amazon RDS. Instead of querying RDS for every request, it can retrieve popular product details from ElastiCache, reducing latency and database load.
+
+
+
+
+
+
+
+dev.to
+
+
+1. How ElastiCache works
+1. User requests data
+Example: Product details
+
+2. Check ElastiCache
+Cache hit
+Return cached data
+
+Cache miss
+Fetch from database
+
+
+3. Return and cache data
+On a cache miss, fetch from RDS, return the result, and cache it for future requests.
+
+
+Important terminology
+- Cache hit: Requested data is found in the cache.
+- Cache miss: Requested data is not in the cache, so the application fetches it elsewhere.
+- TTL (Time to Live): Determines how long a cached entry can remain valid before expiration.
+- Cache invalidation: Removing or refreshing cached data when the underlying data changes.
+2. ElastiCache engines
+Amazon ElastiCache supports two major open-source-compatible engines.
+Feature	Valkey	Redis OSS
+Type	In-memory data store	In-memory data store
+Typical use	Caching and low-latency data access	Caching and low-latency data access
+Data structures	Rich data structures	Rich data structures
+Common use cases	Sessions, leaderboards, caching	Sessions, leaderboards, caching
+Current-service note: AWS has introduced Valkey support as an alternative to Redis OSS. For CLF-C02, recognize ElastiCache primarily as a managed in-memory caching service and understand its caching use cases.
+3. Why use ElastiCache?
+- Lower latency: Memory access is fast.
+- Reduced database load: Fewer repeated queries reach RDS or other data sources.
+- Better application throughput: Applications can handle more requests efficiently.
+- Session storage: Keep frequently accessed session information available quickly.
+- Temporary and frequently accessed data: Cache product details, user preferences, and leaderboard results.
+When should you use it?
+Scenario	Suitable?
+Cache frequently requested product data	Yes
+Store frequently accessed user sessions	Yes
+Reduce repeated database reads	Yes
+Replace every relational database permanently	No
+Store the only copy of important data without considering durability	Generally no
+ElastiCache can offer persistence and replication features depending on the engine and configuration, but it should not automatically be treated as a complete replacement for a durable primary database.
+4. ElastiCache vs. RDS vs. DynamoDB
+Feature	ElastiCache	Amazon RDS	Amazon DynamoDB
+Primary role	In-memory caching/data store	Relational database	NoSQL database
+Data model	Key-value and rich data structures	Tables, rows, relationships	Key-value and document
+Typical strength	Very low-latency access	SQL and relational transactions	Managed, scalable NoSQL access
+Common use	Cache repeated reads	Orders, customers, payments	Shopping carts, user profiles, application state
+Exam trap: If a question says “improve database performance by caching frequently accessed results,” choose Amazon ElastiCache, not RDS or DynamoDB.
+5. Exam-style scenarios
+- An application repeatedly queries the same data from RDS and needs lower latency → ElastiCache.
+- An application needs relational tables and SQL queries → RDS.
+- An application needs managed, high-scale key-value storage → DynamoDB.
+- An application needs a data warehouse for analytics → Redshift.
