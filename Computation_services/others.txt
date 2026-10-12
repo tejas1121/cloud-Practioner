@@ -1,0 +1,123 @@
+These three services solve different problems: API Gateway exposes APIs, AWS Batch runs batch-processing jobs, and Lightsail simplifies launching applications on virtual servers.
+1. Amazon API Gateway
+
+
+
+
+
+
+
+
+
+Amazon API Gateway
+A fully managed service for creating, publishing, securing, monitoring, and managing APIs.
+
+
+What is an API?
+An API (Application Programming Interface) allows two software systems to communicate.
+Example: A mobile shopping app requests product details from a backend server through an API.
+How API Gateway works
+Client
+Website, mobile app, or another system
+
+Amazon API Gateway
+Receives requests, applies authorization and throttling, and routes requests
+
+Backend
+AWS Lambda, HTTP service, or other supported integration
+
+
+Key features
+- API management: Create and publish REST, HTTP, and WebSocket APIs.
+- Security: Integrate with IAM, Amazon Cognito, and Lambda authorizers, depending on API type and configuration.
+- Throttling: Limit request rates to help protect backend services.
+- Monitoring: Integrates with Amazon CloudWatch.
+- Serverless integration: Commonly used with Lambda to build serverless applications.
+Example: You build a Flask-like backend using Lambda and want your mobile app to call it over HTTPS. API Gateway can provide the API endpoint and route requests to Lambda.
+Exam clue: If a question asks how to create, publish, secure, or manage an API endpoint, think Amazon API Gateway.
+2. AWS Batch
+
+
+
+
+
+
+
+
+
+AWS Batch
+A managed service that schedules, queues, and runs batch computing jobs at scale.
+
+
+What is batch processing?
+Batch processing means processing a large amount of work automatically, usually without requiring continuous user interaction.
+Examples:
+- Processing millions of financial transactions overnight.
+- Analyzing large datasets.
+- Rendering animation frames.
+- Running scientific simulations.
+- Processing uploaded files in bulk.
+How AWS Batch works
+1. Submit a job
+Define the work to perform
+
+2. Job queue and scheduler
+Prioritize and schedule jobs
+
+3. Compute environment
+Runs jobs using suitable compute resources, including EC2 or Fargate where supported
+
+4. Job completes
+Results are stored or passed to another workflow
+
+
+Important terminology
+- Job: The unit of work to execute.
+- Job queue: Holds jobs waiting to run.
+- Job definition: Specifies how a job runs, including its container image and configuration.
+- Compute environment: The compute resources available to run jobs.
+Key exam points
+- AWS Batch manages job scheduling and compute provisioning.
+- It can scale compute resources according to queued workload.
+- It is suitable for asynchronous, large-scale processing jobs.
+- You do not need to build your own batch scheduler.
+- AWS Batch is not the same as AWS Lambda: Lambda runs individual function invocations, while Batch is designed to schedule and execute batch jobs.
+Example: A research company needs to process 500,000 scientific files. AWS Batch can queue the work and run jobs in parallel using suitable compute resources.
+Exam clue: If the question mentions job queues, batch jobs, scientific computing, or large-scale scheduled processing, think AWS Batch.
+
+3. Amazon Lightsail
+
+
+
+
+
+
+
+
+
+Amazon Lightsail
+A simplified cloud platform that makes it easy to launch and manage virtual private servers and common application stacks.
+
+
+Why do we need Lightsail?
+EC2 offers flexibility, but beginners may need to configure instances, networking, storage, security, and related services separately.
+Lightsail packages common cloud infrastructure into a simpler experience, often with predictable bundle pricing.
+What does Lightsail provide?
+- Virtual private servers (instances).
+- Preconfigured application and operating-system blueprints.
+- SSD-based storage.
+- Networking and static IP addresses.
+- Managed databases and load balancing options.
+- DNS and simplified deployment workflows.
+Availability of individual features depends on the configuration and region.
+Example
+Suppose you want to host a WordPress blog or a small portfolio website.
+With Lightsail, you can select a WordPress blueprint, choose a bundle, launch the instance, and configure your domain. You don't need to assemble every infrastructure component from scratch.
+Lightsail vs EC2
+Feature	Amazon Lightsail	Amazon EC2
+Main purpose	Simplified hosting	Flexible virtual computing
+Setup	Beginner-friendly, bundled configuration	More granular configuration
+Pricing	Predictable bundle plans	Depends on selected resources and pricing options
+Control	Simplified options	Extensive control and customization
+Best suited for	Small websites, blogs, prototypes	Custom architectures and complex workloads
+Exam clue: If a question mentions a beginner-friendly VPS, simple website hosting, or predictable bundled pricing, think Amazon Lightsail.

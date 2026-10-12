@@ -1,0 +1,151 @@
+AWS Lambda — CLF-C02 Complete Notes
+
+
+
+
+
+
+
+
+
+
+AWS Lambda
+AWS Lambda is a serverless, event-driven compute service that runs your code in response to events without requiring you to provision or manage servers.
+
+
+1. Why do we need Lambda?
+Suppose you build a photo-upload application. Whenever a user uploads an image to Amazon S3, you want to generate a thumbnail.
+Without Lambda, you might keep an EC2 instance running and write code to check for new images.
+With Lambda, S3 automatically triggers your function when an image is uploaded. Lambda executes your code, generates the thumbnail, and stops when the invocation finishes.
+You don't need to manage a continuously running server.
+2. How AWS Lambda works
+1. Event occurs
+S3 upload, API request, scheduled event, etc.
+
+2. Lambda function executes
+Your code processes the event
+
+3. Result or action
+Save data, resize an image, send a message, etc.
+
+
+Important terminology
+- Function: Your code plus its configuration.
+- Invocation: An execution of your function.
+- Trigger: An event source that causes execution.
+- Execution role: IAM role granting the function permission to access AWS resources.
+- Concurrency: The number of function invocations running simultaneously.
+- Cold start: Extra initialization latency when Lambda needs to prepare a new execution environment.
+3. Lambda features
+Feature	Explanation
+Serverless	AWS manages the underlying compute infrastructure.
+Event-driven	Functions can execute in response to events.
+Automatic scaling	Lambda can scale concurrency based on incoming workloads, subject to quotas.
+Multiple runtimes	Supports runtimes such as Python, Node.js, Java, and .NET, subject to current runtime availability.
+Pay-per-use	Charges generally depend on requests and execution duration, plus applicable additional charges.
+Stateless design	Don't rely on local execution-environment storage for persistent application data.
+Monitoring	Integrates with Amazon CloudWatch for logs, metrics, and alarms.
+Exam point: Lambda is not a permanently running server. It executes your code when invoked.
+4. Lambda triggers and integrations
+
+
+
+
+
+
+
+
+
+Amazon S3
+An object is uploaded, and Lambda processes the file, creates a thumbnail, or extracts metadata.
+
+
+
+
+
+
+
+
+
+
+
+
+Amazon API Gateway
+Receives HTTP requests and invokes Lambda to implement a serverless API or backend.
+
+
+
+
+
+
+
+
+
+
+
+
+Amazon EventBridge
+Triggers Lambda in response to matching events or scheduled rules.
+
+
+
+
+
+
+
+
+
+
+
+
+Amazon SQS
+Lambda polls a queue and processes messages in batches, helping build asynchronous applications.
+
+
+
+
+
+
+
+
+
+
+
+
+Amazon DynamoDB
+DynamoDB Streams can trigger Lambda to react to changes in table records.
+
+
+
+Other integrations include Amazon SNS, Amazon Kinesis, and AWS Step Functions.
+5. Lambda vs EC2 vs Fargate
+Feature	Lambda	EC2	Fargate
+Compute model	Functions	Virtual machines	Serverless container compute
+Server management	AWS manages infrastructure	You manage the instance OS and configuration	AWS manages underlying servers
+Execution	Event/function-based	Runs workloads while the instance is running	Runs container workloads
+Billing	Requests and execution duration, plus applicable charges	Instance resources and usage	Allocated container compute and duration
+Best use case	Event-driven code, short processing jobs, APIs	Full OS control, persistent services, custom environments	Containers without managing worker servers
+Exam trap: Lambda and Fargate are both serverless compute options, but Lambda runs functions while Fargate runs containers.
+6. Lambda limits and configuration
+For the exam, understand these configuration concepts:
+- Memory: Configurable memory allocation; CPU allocation increases with memory.
+- Timeout: Maximum time a single invocation can run.
+- Ephemeral storage (/tmp): Temporary storage available to a function's execution environment.
+- Environment variables: Configuration values available to your code.
+- Layers: Package shared libraries and dependencies separately from the function code.
+- Provisioned concurrency: Keeps execution environments initialized to reduce cold-start latency.
+- Reserved concurrency: Reserves concurrency for a function and can also cap its maximum concurrent executions.
+For the standard Lambda execution model, the maximum timeout is 15 minutes per invocation. Lambda is therefore not the right choice for a single uninterrupted job that must run for several hours.
+7. Security and permissions
+Lambda commonly uses IAM in two distinct ways:
+- Execution role: Determines what the function itself can do, such as reading an S3 bucket or writing CloudWatch logs.
+- Resource-based policy: Can authorize another AWS service or account to invoke the function.
+For example, an image-processing function needs s3:GetObject permission to read uploaded images. Grant only the permissions it requires.
+If Lambda needs to access private resources inside a VPC, configure its VPC networking appropriately. Putting Lambda in a public subnet alone does not automatically give it internet access.
+8. Lambda pricing
+Lambda pricing generally includes:
+- Number of requests.
+- Execution duration, measured in increments of time and based on allocated memory.
+- Any applicable charges for connected services, data transfer, or additional features.
+The AWS Free Tier and other pricing allowances can change, so check current terms before estimating costs.
+Exam scenario: A company runs a function only when a file arrives. It wants to avoid paying for a continuously running EC2 instance. Lambda is a strong fit.

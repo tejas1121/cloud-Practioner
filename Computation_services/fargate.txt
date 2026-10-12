@@ -1,0 +1,86 @@
+These two AWS services are related to containers, but they solve different problems. This distinction is important for the AWS Cloud Practitioner exam.
+1. AWS Fargate
+
+
+
+
+
+
+
+
+
+
+AWS Fargate
+Fargate is a serverless compute engine for containers. You run containers without provisioning or managing EC2 instances.
+
+
+How it works
+1. Create a container image and store it in Amazon ECR.
+2. Define your container using ECS or EKS.
+3. Choose Fargate as the compute option.
+4. AWS manages the underlying servers; you focus on your containers and applications.
+Example: You deploy a Python Flask application in a container. With Fargate, you don't need to create or manage EC2 instances to run it.
+Key exam points
+- No need to manage the underlying EC2 servers.
+- Pay for the compute resources used by your tasks or pods, subject to the applicable billing rules.
+- Works with Amazon ECS and Amazon EKS.
+- AWS manages the underlying infrastructure, but you still manage your container image, application, configuration, IAM permissions, and networking.
+2. Amazon EKS
+
+
+
+
+
+
+
+
+
+
+Amazon EKS
+EKS stands for Elastic Kubernetes Service. It is a managed service that lets you run Kubernetes on AWS without managing the Kubernetes control plane yourself.
+
+
+What is Kubernetes?
+Kubernetes is a container orchestration platform. It manages containerized applications, including deployment, scaling, networking, and recovery.
+How EKS works
+1. Create an EKS cluster.
+2. Define your application as Kubernetes resources, such as Pods and Deployments.
+3. Choose where the Pods run:
+   - EC2 nodes: You manage the worker-node capacity and operating systems.
+   - Fargate: AWS manages the underlying compute for eligible Pods.
+4. Kubernetes schedules and manages the application workloads.
+Key exam points
+- EKS is for Kubernetes orchestration.
+- AWS manages the Kubernetes control plane.
+- You can use EC2 worker nodes or Fargate for eligible workloads.
+- EKS can integrate with AWS networking, IAM, load balancing, and monitoring services.
+3. Fargate vs EKS
+Feature	AWS Fargate	Amazon EKS
+Type	Serverless container compute	Managed Kubernetes service
+Main purpose	Run containers without managing servers	Orchestrate containers using Kubernetes
+Manages Kubernetes?	No, not by itself	Provides a managed Kubernetes control plane
+EC2 management	Not required for Fargate workloads	Required for EC2-based worker nodes; not for Fargate Pods
+Can they work together?	Yes	Yes
+Best suited for	Avoiding worker-server management	Applications that need Kubernetes
+Important: This is not an either-or choice. You can use EKS with Fargate. EKS provides the orchestration, while Fargate provides the compute.
+4. Understand the AWS container ecosystem
+Amazon ECR
+Stores container images
+
+Amazon ECS or Amazon EKS
+Orchestrates and manages workloads
+
+EC2
+You manage worker servers
+
+
+Fargate
+AWS manages underlying compute
+
+
+
+
+Remember these three services:
+- ECR: Where container images are stored.
+- ECS / EKS: How containers are orchestrated.
+- Fargate: Where containers can run without you managing the underlying servers.
