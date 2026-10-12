@@ -1,0 +1,65 @@
+AWS CDK — CLF-C02 Notes
+
+
+
+
+
+
+
+
+
+AWS Cloud Development Kit (CDK)
+AWS CDK is an Infrastructure as Code (IaC) framework that lets you define AWS infrastructure using familiar programming languages instead of writing infrastructure templates manually.
+
+
+1. Why do we need AWS CDK?
+Suppose you want to create an S3 bucket, Lambda function, and API Gateway.
+With CloudFormation, you can describe these resources using YAML or JSON.
+With CDK, you can define the same infrastructure using code in languages such as:
+- TypeScript
+- JavaScript
+- Python
+- Java
+- C#
+- Go
+CDK then synthesizes your code into a CloudFormation template, which is used to deploy the infrastructure.
+2. How AWS CDK works
+1. Write CDK code
+Python, TypeScript, Java, etc.
+
+2. Synthesize
+CDK generates a CloudFormation template
+
+3. Deploy
+CloudFormation provisions AWS resources
+
+
+Example
+You can define an S3 bucket in Python:
+from aws_cdk import App, Stackfrom aws_cdk import aws_s3 as s3app = App()stack = Stack(app, "MyStack")s3.Bucket(stack, "MyBucket")app.synth()
+
+
+
+The app.synth() step generates the CloudFormation template. Deployment is a separate step, commonly performed using cdk deploy.
+3. Important AWS CDK terminology
+Term	Meaning
+App	The top-level container for CDK stacks.
+Stack	A deployable unit that maps to a CloudFormation stack.
+Construct	A reusable building block representing one or more AWS resources.
+Synthesis	Converts CDK code into CloudFormation templates.
+Bootstrap	Prepares an AWS environment for CDK deployment, including resources CDK may need.
+Deployment	Applies the generated infrastructure template to AWS.
+4. AWS CDK vs CloudFormation vs Terraform
+Feature	AWS CDK	CloudFormation	Terraform
+Type	IaC development framework	AWS IaC service	IaC tool
+Definition	Programming languages	YAML or JSON	HCL
+Deployment engine	Synthesizes to CloudFormation	Provisions resources directly from templates	Terraform engine and providers
+Reusable logic	Programming abstractions and constructs	Template features and nested stacks	Modules and expressions
+Multi-cloud	Primarily AWS	Primarily AWS	Supports multiple providers
+Important exam distinction: CDK and CloudFormation are not competitors in the same way as CDK and Terraform. CDK generates CloudFormation templates, and CloudFormation deploys the resources.
+5. CLF-C02 exam traps
+- Want to define infrastructure using Python or TypeScript? AWS CDK.
+- Want to provision resources from YAML or JSON templates? AWS CloudFormation.
+- Want infrastructure management across AWS, Azure, and other providers? Terraform is a common choice.
+- Does writing CDK code immediately create resources? No. Synthesis generates the template; deployment applies it.
+- What does a CDK construct represent? A reusable infrastructure building block.

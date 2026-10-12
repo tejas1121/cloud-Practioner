@@ -1,0 +1,93 @@
+AWS Systems Manager & AWS OpsWorks — CLF-C02 Notes
+These two services help manage infrastructure, but they focus on different tasks.
+- AWS Systems Manager: Centralized operational management of AWS resources.
+- AWS OpsWorks: Configuration management and application deployment using tools such as Chef and Puppet.
+1. AWS Systems Manager
+
+
+
+
+
+
+
+
+
+AWS Systems Manager
+Systems Manager helps you view, operate, automate, and troubleshoot AWS resources across your infrastructure.
+
+
+Why do we need it?
+Imagine you manage 100 EC2 instances. Connecting to each instance individually to run commands, patch the operating system, or inspect configuration would be time-consuming.
+Systems Manager provides centralized tools to perform many of these tasks.
+Important features
+
+Session Manager
+Connect to supported managed instances through a browser or CLI without requiring inbound SSH ports or SSH keys.
+
+
+
+
+Run Command
+Execute administrative commands remotely across multiple managed instances.
+
+
+
+
+Patch Manager
+Helps organize and automate operating-system patching according to defined policies and maintenance schedules.
+
+
+
+
+Automation
+Automates operational tasks, such as restarting instances or performing maintenance workflows.
+
+
+
+
+Inventory and Fleet Manager
+Helps collect software and configuration information and manage fleets of supported instances.
+
+
+
+Example
+You need to install security updates on 50 EC2 instances.
+Instead of logging in to every server manually, you can use Systems Manager's patching and automation capabilities to manage the operation centrally.
+Exam clue: Centralized server operations, remote command execution, patching, or shell access without opening inbound SSH → AWS Systems Manager.
+2. AWS OpsWorks
+
+
+
+
+
+
+
+
+
+AWS OpsWorks was a configuration management service for automating server configuration, application deployment, and infrastructure operations using tools such as Chef and Puppet.
+
+
+What problem did it solve?
+Suppose a company manages 100 EC2 instances. Every server needs the same packages, application configuration, and security settings.
+Instead of configuring each server manually, OpsWorks could automate the setup and ongoing configuration across the fleet.
+Key concepts
+- Chef: Uses recipes and cookbooks to define server configuration.
+- Puppet: Uses manifests and modules to manage system configuration.
+- Stacks and layers: OpsWorks Stacks organized applications and infrastructure into logical groups.
+Example: Automatically install Nginx, configure a web server, and deploy an application consistently across multiple instances.
+Current status — important
+AWS OpsWorks, including OpsWorks Stacks, OpsWorks for Chef Automate, and OpsWorks for Puppet Enterprise, reached end of support in 2024. It is a legacy service, not an option for new deployments. AWS Systems Manager is one recommended migration path for OpsWorks Stacks workloads. 
+
+AWS General Reference
++1
+
+
+
+
+OpsWorks vs Systems Manager
+Feature	AWS Systems Manager	AWS OpsWorks
+Main purpose	Centralized operations and resource management	Formerly configuration management and deployment
+Remote commands	Run Command	Chef/Puppet-based automation
+Patching	Patch Manager	Configuration automation could support related tasks
+Current status	Available AWS service	Discontinued
+Exam relevance	Know current features	Understand legacy purpose and status

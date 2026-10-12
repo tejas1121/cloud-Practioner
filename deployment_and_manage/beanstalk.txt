@@ -1,0 +1,64 @@
+AWS Elastic Beanstalk
+Elastic Beanstalk is a service that makes it easy to deploy and manage web applications without manually setting up all the underlying infrastructure.
+
+
+1. Why do we need Elastic Beanstalk?
+Suppose you build a web application using Python, Java, Node.js, or PHP.
+Normally, you may need to configure:
+- EC2 instances
+- Load balancers
+- Auto Scaling
+- Security groups
+- Application deployment
+- Health monitoring
+With Elastic Beanstalk, you upload your application code and choose the environment settings. Beanstalk provisions and manages much of the supporting infrastructure for you.
+Important: You still have access to the underlying AWS resources and remain responsible for your application and its configuration.
+2. How Elastic Beanstalk works
+1. Upload application code
+Python, Java, Node.js, PHP, and other supported platforms
+
+2. Elastic Beanstalk
+Deploys the application and configures the environment
+
+3. Underlying AWS resources
+EC2, Auto Scaling, load balancing, and monitoring as configured
+
+
+3. Key features
+- Easy deployment: Upload your application and deploy it without manually configuring every resource.
+- Capacity provisioning: Creates the infrastructure required by the selected environment.
+- Load balancing: Can distribute incoming traffic across multiple instances.
+- Auto Scaling: Can adjust instance capacity based on configured scaling policies.
+- Health monitoring: Monitors application and environment health.
+- Application versions: Supports deploying and managing different application versions.
+4. Important terminology
+Term	Meaning
+Application	Logical container for your application versions and environments.
+Application version	A specific version of your application code.
+Environment	The deployed application and its supporting resources.
+Environment tier	Commonly a web server environment or a worker environment.
+- Web server environment: Handles web requests from users.
+- Worker environment: Processes background jobs, often using a queue such as Amazon SQS.
+5. Elastic Beanstalk vs other AWS services
+Service	Main purpose
+Elastic Beanstalk	Deploy and manage web applications with less infrastructure setup
+AWS Lambda	Run event-driven functions without managing servers
+Amazon ECS	Orchestrate containers
+Amazon EKS	Run Kubernetes workloads
+AWS CloudFormation	Provision infrastructure using templates
+AWS Lightsail	Simplified virtual server and application hosting
+Elastic Beanstalk vs CloudFormation
+This is a common exam distinction:
+- Elastic Beanstalk: Focuses on application deployment and environment management.
+- CloudFormation: Focuses on defining and provisioning infrastructure resources.
+Elastic Beanstalk can use CloudFormation behind the scenes to create and manage environment resources.
+6. Pricing
+Elastic Beanstalk itself has no additional service charge for using the service. You pay for the underlying AWS resources your environment consumes, such as EC2 instances, load balancers, and storage.
+For example, a Beanstalk environment running EC2 instances and an Application Load Balancer can incur charges for both.
+7. CLF-C02 exam traps
+- You want to deploy a web application quickly without manually managing all infrastructure: Elastic Beanstalk.
+- You want to run individual functions in response to events: Lambda.
+- You want to define infrastructure in YAML or JSON: CloudFormation.
+- You want to manage Kubernetes workloads: EKS.
+- Elastic Beanstalk is not a fully serverless service; its environments commonly use EC2 instances.
+- Elastic Beanstalk does not mean AWS takes responsibility for your application code, data, or application-level security.
