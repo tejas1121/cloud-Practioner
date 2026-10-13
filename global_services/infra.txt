@@ -1,0 +1,101 @@
+Both services extend AWS capabilities beyond traditional AWS Regions, but they solve different problems.
+- AWS Outposts: Brings AWS infrastructure and services to your own premises.
+- AWS Wavelength: Embeds AWS compute and storage capabilities in telecommunications providers' 5G networks, closer to mobile devices.
+1. AWS Outposts
+
+
+
+
+
+
+
+
+
+AWS Outposts
+AWS Outposts is a fully managed service that brings AWS infrastructure and supported services to a customer's on-premises data center or facility.
+
+
+Why do we need Outposts?
+Some companies cannot move all workloads to an AWS Region because they need:
+- Very low latency for local applications.
+- Local data processing.
+- Data residency or regulatory compliance.
+- Integration with existing on-premises systems.
+Outposts allows these workloads to run on AWS infrastructure located at the customer's site.
+How it works
+Customer data center
+Local applications and connected systems
+
+AWS Outposts infrastructure
+AWS-managed hardware installed on premises
+
+AWS Region
+Management, service integration, and supported control-plane operations
+
+
+Key exam points
+- AWS installs and manages the Outposts infrastructure.
+- The hardware is physically located at the customer's premises.
+- It provides a consistent AWS environment for supported local workloads.
+- It is designed for low-latency local processing, data residency requirements, and hybrid cloud architectures.
+- It is not the same as AWS Local Zones: Outposts is installed at the customer's location, while Local Zones are AWS-operated infrastructure in metropolitan areas.
+Example: A manufacturing plant needs to process sensor data locally to keep factory machines operating with very low latency. Outposts may be suitable.
+Exam clue: AWS infrastructure installed in a customer's own data center → AWS Outposts.
+2. AWS Wavelength
+
+
+
+
+
+
+
+
+
+AWS Wavelength
+Wavelength places AWS compute and storage inside telecommunications providers' 5G networks, bringing application processing closer to mobile devices and end users. 
+
+AWS Documentation
++1
+
+
+
+
+
+Why do we need Wavelength?
+Some applications need extremely low latency. Sending every request to a distant AWS Region can add unnecessary network delay.
+Wavelength enables workloads to run near the mobile users generating the requests.
+How it works
+Mobile device or 5G-connected user
+
+Telecommunications provider's 5G network
+
+Wavelength Zone
+Nearby AWS compute and storage
+
+Parent AWS Region
+Access to regional AWS services
+
+
+Key exam points
+- Designed for ultra-low-latency applications used by mobile devices.
+- Wavelength Zones are located within telecommunications providers' networks.
+- A Wavelength Zone is associated with a parent AWS Region.
+- Applications can use supported AWS resources, such as EC2, in Wavelength Zones.
+- It is useful for 5G gaming, live video, connected vehicles, IoT, and edge AI. 
+  
+  Overview of Deployment Options on AWS
+  +1
+Example: A cloud-gaming company wants to process player inputs close to 5G-connected gamers to reduce delays. AWS Wavelength may be appropriate.
+Exam clue: Ultra-low latency for mobile users over 5G → AWS Wavelength.
+
+3. Outposts vs Wavelength vs Local Zones
+A third service is useful to know for the exam: AWS Local Zones.
+Feature	AWS Outposts	AWS Wavelength	AWS Local Zones
+Where it runs	Customer's premises	Telecom provider's 5G network	AWS infrastructure near major cities
+Main goal	Local on-premises workloads	Low-latency mobile applications	Low-latency access to AWS services near users
+Typical use case	Factory or data center	Cloud gaming or connected vehicles	Media rendering or applications serving a city
+Key phrase	Customer data center	5G edge	AWS infrastructure near a metro area
+AWS describes these as different ways to extend cloud capabilities to locations closer to applications and users. 
+
+AWS
++2

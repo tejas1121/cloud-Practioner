@@ -1,0 +1,129 @@
+In AWS, global applications are applications designed to serve users across multiple geographic locations with low latency, high availability, and reliable performance.
+For the AWS Cloud Practitioner exam, focus on how AWS delivers content globally, routes users to appropriate endpoints, and improves application availability.
+1. Why do we need global applications?
+Suppose your application runs on an EC2 instance in Mumbai, India.
+- Users in India may experience good response times.
+- Users in the USA or Europe may experience higher latency because requests travel farther.
+- If your Mumbai application endpoint becomes unavailable, users may lose access unless you design for failover.
+AWS provides services to improve global performance and availability.
+2. Amazon CloudFront
+
+
+
+
+
+
+
+
+
+Amazon CloudFront
+CloudFront is a global content delivery network (CDN) that delivers content through a network of edge locations.
+
+
+How it works
+Origin server
+Amazon S3 bucket or application server
+
+CloudFront edge locations
+Cache copies of eligible content closer to users
+
+Users worldwide
+Receive content from a nearby edge location when available in cache
+
+
+Key exam points
+- Reduces latency by caching content closer to users.
+- Delivers static and dynamic content.
+- Supports HTTPS and integrates with AWS security services such as AWS WAF.
+- Works with origins such as S3 and application servers.
+- CloudFront is a CDN, not a DNS service.
+Example: A website stores images and CSS files in S3. CloudFront caches and delivers those files to users worldwide.
+3. Amazon Route 53
+
+
+
+
+
+
+
+
+
+Amazon Route 53
+Route 53 is a highly available and scalable DNS web service that translates domain names into information browsers and applications use to connect to endpoints.
+
+
+Important routing policies
+Routing policy	Purpose
+Simple	Routes traffic using a basic DNS record configuration.
+Weighted	Distributes traffic among endpoints according to assigned weights.
+Latency-based	Routes users toward the AWS Region expected to provide the lowest latency.
+Failover	Routes traffic to a primary endpoint and can switch to a secondary endpoint when health checks indicate failure.
+Geolocation	Routes based on the geographic location of the user.
+Geoproximity	Routes based on the geographic location of resources and users, with optional bias adjustments.
+IP-based	Routes according to the IP ranges of users.
+Multivalue answer	Returns multiple healthy record values, helping clients choose an endpoint.
+Example
+Your application runs in Mumbai and Virginia.
+- Latency-based routing: Sends users toward the Region expected to offer lower latency.
+- Failover routing: Uses a secondary endpoint when the primary endpoint is unhealthy.
+- Weighted routing: Sends, for example, 90% of traffic to Mumbai and 10% to Virginia for a controlled rollout.
+Exam trap: Route 53 is DNS-based routing. It does not itself cache website files like CloudFront.
+4. AWS Global Accelerator
+
+
+
+
+
+
+
+
+
+AWS Global Accelerator
+Global Accelerator improves availability and performance for applications by directing user traffic through the AWS global network to healthy application endpoints.
+
+
+How it works
+1. Provides static anycast IP addresses as fixed entry points.
+2. Routes traffic onto the AWS global network.
+3. Directs traffic to suitable endpoints, such as load balancers or supported EC2 endpoints.
+4. Uses health checks to help route traffic away from unhealthy endpoints.
+Key exam points
+- Provides static IP addresses that can remain the entry points while backend endpoints change.
+- Supports TCP and UDP applications.
+- Helps improve application availability and network performance.
+- Does not work as a content-caching CDN.
+Example: A multiplayer gaming application needs fixed IP addresses and reliable, low-latency access for users worldwide. Global Accelerator may be a good fit.
+5. CloudFront vs Route 53 vs Global Accelerator
+Feature	CloudFront	Route 53	Global Accelerator
+Main purpose	Content delivery	DNS and traffic routing	Network traffic acceleration
+Main mechanism	Edge caching	DNS responses	AWS global network
+Static IPs as entry points	Not its main feature	Not generally the main use	Yes, static anycast IPs
+Caches content	Yes	No	No
+Health-based routing	Origin and edge behavior	Health checks with routing policies	Endpoint health checks
+Typical use case	Websites, images, videos, APIs	Domain resolution and routing	Global TCP/UDP applications
+6. Amazon S3 Transfer Acceleration
+Amazon S3 Transfer Acceleration helps accelerate uploads to an S3 bucket over long distances by using AWS edge locations and the AWS network.
+Example: A customer in Europe uploads large files to an S3 bucket hosted in Mumbai. Transfer Acceleration may improve upload speed.
+Remember:
+- CloudFront: Accelerates content delivery to users.
+- S3 Transfer Acceleration: Accelerates long-distance transfers into S3.
+- Global Accelerator: Accelerates application network traffic.
+7. Multi-Region architecture
+A global application may deploy resources in multiple AWS Regions to improve resilience and serve users closer to their locations.
+Users worldwide
+
+Route 53 or Global Accelerator
+Directs users to suitable application endpoints
+
+Mumbai Region
+Load balancer, application, database
+
+
+Virginia Region
+Load balancer, application, database
+
+
+
+Data replication and failover require separate configuration.
+
+Important: Deploying in multiple Regions does not automatically replicate application data or guarantee failover. You must configure appropriate replication, health checks, routing, and recovery procedures.
